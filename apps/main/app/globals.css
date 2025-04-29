@@ -1,0 +1,17 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html {
+  font-family: 'Pretendard Variable';
+  scrollbar-gutter: stable;
+}
+
+body {
+  overscroll-behavior: none;
+}
+
+body {
+  background: white;
+  color: black;
+}

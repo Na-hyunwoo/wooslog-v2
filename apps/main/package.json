@@ -1,0 +1,32 @@
+{
+  "name": "main",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix --ext .js,.jsx,.ts,.tsx",
+    "check-types": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@wooslog/tailwind-config": "workspace:*",
+    "@wooslog/ui": "workspace:*",
+    "next": "15.2.2",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "react-syntax-highlighter": "^15.6.1"
+  },
+  "devDependencies": {
+    "@types/node": "^20",
+    "@types/react": "^19.0.0",
+    "@types/react-dom": "^19.0.0",
+    "@types/react-syntax-highlighter": "^15.5.13",
+    "@wooslog/eslint-config": "workspace:*",
+    "@wooslog/prettier-config": "workspace:*",
+    "@wooslog/tsconfig": "workspace:*",
+    "tailwind-merge": "^3.2.0",
+    "typescript": "^5"
+  }
+}
