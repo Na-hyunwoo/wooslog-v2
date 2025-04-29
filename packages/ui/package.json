@@ -1,0 +1,50 @@
+{
+  "name": "@wooslog/ui",
+  "version": "0.1.0",
+  "private": true,
+  "main": "dist/index.cjs",
+  "module": "dist/index.mjs",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "exports": {
+    ".": {
+      "require": "./dist/index.cjs",
+      "import": "./dist/index.mjs",
+      "types": "./dist/index.d.ts"
+    },
+    "./styles.css": "./dist/styles.css"
+  },
+  "sideEffects": false,
+  "scripts": {
+    "build": "rollup -c",
+    "dev": "rollup -c --watch",
+    "clean": "rm -rf dist",
+    "release:patch": "pnpm build && pnpm version patch && pnpm publish",
+    "release:minor": "pnpm build && pnpm version minor && pnpm publish",
+    "release:major": "pnpm build && pnpm version major && pnpm publish",
+    "lint": "eslint .",
+    "lint:fix": "eslint --fix src/**/*.{ts,tsx}"
+  },
+  "peerDependencies": {
+    "react": ">=19.0.0",
+    "react-dom": ">=19.0.0"
+  },
+  "devDependencies": {
+    "@rollup/plugin-commonjs": "^28.0.3",
+    "@rollup/plugin-node-resolve": "^16.0.1",
+    "@rollup/plugin-typescript": "^12.1.2",
+    "@types/react": "^19.0.0",
+    "@types/react-dom": "^19.0.0",
+    "@wooslog/eslint-config": "workspace:*",
+    "@wooslog/prettier-config": "workspace:*",
+    "@wooslog/tailwind-config": "workspace:*",
+    "@wooslog/tsconfig": "workspace:*",
+    "rollup": "^4.39.0",
+    "rollup-plugin-dts": "^6.2.1",
+    "rollup-plugin-postcss": "^4.0.2",
+    "tslib": "^2.8.1",
+    "typescript": "^5.8.2"
+  }
+}
