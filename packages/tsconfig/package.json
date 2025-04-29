@@ -1,0 +1,17 @@
+{
+  "name": "@wooslog/tsconfig",
+  "version": "1.0.0",
+  "description": "tsconfig for wooslog",
+  "main": "index.js",
+  "files": [
+    "base.json",
+    "library.json",
+    "nextjs.json"
+  ],
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "contactharry97@gmail.com",
+  "license": "ISC"
+}
