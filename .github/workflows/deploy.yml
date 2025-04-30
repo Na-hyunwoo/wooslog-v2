@@ -7,7 +7,7 @@ on:
 
 env:
   REGISTRY: ghcr.io
-  IMAGE_NAME: ${{ github.repository }}/main
+  IMAGE_NAME: ${{ github.repository | lowercase }}/main
   IMAGE_TAG: ${{ github.sha }}
 
 jobs:
