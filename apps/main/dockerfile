@@ -4,12 +4,12 @@ WORKDIR /app
 
 COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
 
-COPY apps/main/package.json ./apps/main/
+COPY packages/tsconfig/package.json ./packages/tsconfig/
 COPY packages/eslint-config/package.json ./packages/eslint-config/
 COPY packages/prettier-config/package.json ./packages/prettier-config/
 COPY packages/tailwind-config/package.json ./packages/tailwind-config/
-COPY packages/tsconfig/package.json ./packages/tsconfig/
 COPY packages/ui/package.json ./packages/ui/
+COPY apps/main/package.json ./apps/main/
 
 RUN npm install -g pnpm 
 RUN pnpm install --frozen-lockfile
@@ -18,7 +18,12 @@ COPY apps/main ./apps/main
 COPY packages ./packages
 COPY turbo.json ./turbo.json
 
-RUN pnpm --filter main build
+RUN cd packages/tsconfig && pnpm build
+RUN cd packages/eslint-config && pnpm build
+RUN cd packages/prettier-config && pnpm build
+RUN cd packages/tailwind-config && pnpm build
+RUN cd packages/ui && pnpm build
+RUN cd apps/main && pnpm build
 
 FROM node:20-alpine AS runner
 WORKDIR /app 
