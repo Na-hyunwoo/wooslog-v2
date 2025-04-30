@@ -18,10 +18,6 @@ COPY apps/main ./apps/main
 COPY packages ./packages
 COPY turbo.json ./turbo.json
 
-RUN cd packages/tsconfig && pnpm build
-RUN cd packages/eslint-config && pnpm build
-RUN cd packages/prettier-config && pnpm build
-RUN cd packages/tailwind-config && pnpm build
 RUN cd packages/ui && pnpm build
 RUN cd apps/main && pnpm build
 
