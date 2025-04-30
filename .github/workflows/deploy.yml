@@ -7,7 +7,7 @@ on:
 
 env:
   REGISTRY: ghcr.io
-  IMAGE_NAME: ${{ github.repository | lowercase }}/main
+  IMAGE_NAME: na-hyunwoo/wooslog-v2/main
   IMAGE_TAG: ${{ github.sha }}
 
 jobs:
