@@ -33,20 +33,22 @@ RUN addgroup --system --gid 1001 nodejs
 RUN adduser --system --uid 1001 nextjs
 RUN npm install -g pnpm
 
-COPY --from=builder /app/apps/main/next.config.js ./
-COPY --from=builder /app/apps/main/public ./public
-COPY --from=builder /app/apps/main/.next ./.next
+COPY --from=builder /app/pnpm-workspace.yaml ./pnpm-workspace.yaml
+COPY --from=builder /app/apps/main/package.json ./apps/main/package.json
+COPY --from=builder /app/apps/main/next.config.js ./apps/main/next.config.js
+COPY --from=builder /app/apps/main/public ./apps/main/public
+COPY --from=builder /app/apps/main/.next ./apps/main/.next
 COPY --from=builder /app/package.json ./package.json
 COPY --from=builder /app/pnpm-lock.yaml ./pnpm-lock.yaml
 
 RUN pnpm install --prod --frozen-lockfile
-RUN chown -R nextjs:nodejs /app/.next
+RUN chown -R nextjs:nodejs /app/apps/main/.next
 
 USER nextjs
 
 EXPOSE 3000
 ENV HOSTNAME=0.0.0.0
 
-CMD ["pnpm", "--filter", "main", "start"]
+CMD ["node", "apps/main/.next/server/server.js"]
 
 

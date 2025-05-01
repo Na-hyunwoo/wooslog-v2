@@ -125,7 +125,6 @@ jobs:
 
             # docker-compose 파일 생성
             cat > ~/docker-compose.yml << 'EOL'
-            version: '3'
 
             services:
               main-app:
