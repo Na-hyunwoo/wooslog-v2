@@ -1,7 +1,6 @@
 /* eslint-disable sort-keys */
 export const ROUTES = {
   HOME: '/',
-  ARCHIVE: '/archive',
   ABOUT: '/about',
 } as const;
 
