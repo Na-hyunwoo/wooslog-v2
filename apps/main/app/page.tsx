@@ -20,10 +20,10 @@ export default async function Home() {
   return (
     <main className="mx-auto max-w-screen-lg">
       <h1 className="text-center text-2xl font-bold my-10">
-        &quot;호기심이 이끄는 대로 기술을 탐험하고, 생각의 깊이를 더해가는 공간. <br />
-        실무에서 놓친 고민들을 되살려 더 나은 개발자로 성장하는 기록.&quot;
+        호기심이 이끄는 대로 기술을 탐험하고, 생각의 깊이를 더해가는 공간. <br />
+        실무에서 놓친 고민들을 되살려 더 나은 개발자로 성장하는 기록.
       </h1>
-      <section className="flex items-center justify-center gap-x-4 mb-10">
+      <section className="flex items-center justify-center gap-x-4 mb-10 shadow-[0_2px_33px_rgba(0,0,0,0.25)] rounded-2xl p-4 w-fit mx-auto">
         <Image
           src="/avatar.png"
           alt="nahyunwoo"
@@ -33,11 +33,13 @@ export default async function Home() {
         />
         <div>
           <p className="font-bold">나현우</p>
-          <p>
-            &quot;코드 한 줄에도 깊은 고민을 담는 개발자입니다. 단순히 작동하는 코드를 넘어,
-            유지보수성과 확장성을 고려한 설계를 추구합니다. 시간에 쫓겨 삼켜야 했던 고민들을 개인
-            프로젝트에서 풀어내며, 그 과정에서 얻은 통찰력으로 더 나은 개발자가 되어가고
-            있습니다.&quot;
+          <p className="font-medium text-sm">
+            코드 한 줄에도 깊은 고민을 담는 개발자입니다. 단순히 작동하는 코드를 넘어, 유지보수성과
+            확장성을 고려한 설계를 추구합니다.
+          </p>
+          <p className="font-medium text-sm">
+            시간에 쫓겨 삼켜야 했던 고민들을 개인 프로젝트에서 풀어내며, 그 과정에서 얻은 통찰력으로
+            더 나은 개발자가 되려 노력합니다.
           </p>
         </div>
       </section>
