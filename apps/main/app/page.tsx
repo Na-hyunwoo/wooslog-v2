@@ -1,3 +1,5 @@
+import Image from 'next/image';
+
 import { Card } from '../components';
 import { DATABASE_ID, ON_THE_FIRST_SCREEN, URL } from '../const';
 import { DatabaseResultType } from '../types';
@@ -16,20 +18,46 @@ export default async function Home() {
   const { results }: { results: DatabaseResultType[] } = await res.json();
 
   return (
-    <main className="mx-auto grid max-w-screen-lg grid-cols-1 justify-center justify-items-center gap-y-16 py-10 lg:grid-cols-2 lg:gap-y-8">
-      {results.map((result, index) => {
-        return (
-          <Card
-            key={result.id}
-            href={`/post/${result.id}`}
-            alt={result.properties['설명'].rich_text[0].plain_text}
-            src={result.properties['이미지'].files[0].file.url}
-            title={result.properties['이름'].title[0].plain_text}
-            desc={result.properties['설명'].rich_text[0].plain_text}
-            priority={index < ON_THE_FIRST_SCREEN ? true : false}
-          />
-        );
-      })}
+    <main className="mx-auto max-w-screen-lg">
+      <h1 className="text-center text-2xl font-bold my-10">
+        &quot;호기심이 이끄는 대로 기술을 탐험하고, 생각의 깊이를 더해가는 공간. <br />
+        실무에서 놓친 고민들을 되살려 더 나은 개발자로 성장하는 기록.&quot;
+      </h1>
+      <section className="flex items-center justify-center gap-x-4 mb-10">
+        <Image
+          src="/avatar.png"
+          alt="nahyunwoo"
+          width={80}
+          height={80}
+          className="rounded-full shadow-2xl"
+        />
+        <div>
+          <p className="font-bold">나현우</p>
+          <p>
+            &quot;코드 한 줄에도 깊은 고민을 담는 개발자입니다. 단순히 작동하는 코드를 넘어,
+            유지보수성과 확장성을 고려한 설계를 추구합니다. 시간에 쫓겨 삼켜야 했던 고민들을 개인
+            프로젝트에서 풀어내며, 그 과정에서 얻은 통찰력으로 더 나은 개발자가 되어가고
+            있습니다.&quot;
+          </p>
+        </div>
+      </section>
+      <ul className="grid grid-cols-1 justify-center justify-items-center gap-y-4 py-10 lg:grid-cols-3 lg:gap-y-8">
+        {results.map((result, index) => {
+          return (
+            <Card
+              key={result.id}
+              href={`/post/${result.id}`}
+              alt={result.properties['설명'].rich_text[0].plain_text}
+              src={result.properties['이미지'].files[0].file.url}
+              title={result.properties['이름'].title[0].plain_text}
+              desc={result.properties['설명'].rich_text[0].plain_text}
+              createdTime={result.created_time}
+              lastEditedTime={result.last_edited_time}
+              priority={index < ON_THE_FIRST_SCREEN ? true : false}
+            />
+          );
+        })}
+      </ul>
     </main>
   );
 }

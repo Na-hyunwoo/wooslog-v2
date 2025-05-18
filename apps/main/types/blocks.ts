@@ -85,6 +85,8 @@ export interface ImageBlock {
 
 export type DatabaseResultType = {
   id: string;
+  created_time: string;
+  last_edited_time: string;
   properties: {
     이미지: { files: File[] };
     이름: { title: Title[] };
