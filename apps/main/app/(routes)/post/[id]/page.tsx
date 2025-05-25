@@ -10,19 +10,24 @@ export const revalidate = 3600;
 export const dynamicParams = true;
 
 export const generateStaticParams = async () => {
-  const res = await fetch(URL.DATABASES(DATABASE_ID.POST), {
-    headers: {
-      Authorization: `Bearer ${process.env.NOTION_API_KEY}`,
-      'Content-Type': 'application/json',
-      'Notion-Version': '2022-06-28',
-    },
-    method: 'POST',
-  });
-  const { results }: { results: DatabaseResultType[] } = await res.json();
+  try {
+    const res = await fetch(URL.DATABASES(DATABASE_ID.POST), {
+      headers: {
+        Authorization: `Bearer ${process.env.NOTION_API_KEY}`,
+        'Content-Type': 'application/json',
+        'Notion-Version': '2022-06-28',
+      },
+      method: 'POST',
+    });
+    const { results = [] }: { results?: DatabaseResultType[] } = await res.json();
 
-  return results.map((result) => ({
-    id: result.id,
-  }));
+    return results.map((result) => ({
+      id: result.id,
+    }));
+  } catch (error) {
+    console.error('Failed to generate static params:', error);
+    return [];
+  }
 };
 
 export default async function Detail({ params }: { params: Promise<{ id: string }> }) {
