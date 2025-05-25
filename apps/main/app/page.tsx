@@ -15,7 +15,7 @@ export default async function Home() {
     },
     method: 'POST',
   });
-  const { results }: { results: DatabaseResultType[] } = await res.json();
+  const { results = [] }: { results?: DatabaseResultType[] } = await res.json();
 
   return (
     <main className="mx-auto max-w-screen-lg">

@@ -26,6 +26,8 @@ RUN pnpm turbo run build
 FROM node:20-alpine AS runner
 WORKDIR /app 
 
+ARG NOTION_API_KEY
+ENV NOTION_API_KEY=${NOTION_API_KEY}
 ENV NODE_ENV production
 
 RUN addgroup --system --gid 1001 nodejs
