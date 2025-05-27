@@ -1,4 +1,5 @@
 import Image from 'next/image';
+import Link from 'next/link';
 
 import { Card } from '../components';
 import { DATABASE_ID, ON_THE_FIRST_SCREEN, URL } from '../const';
@@ -30,6 +31,7 @@ export default async function Home() {
           width={80}
           height={80}
           className="rounded-full shadow-2xl"
+          priority
         />
         <div>
           <p className="font-bold">나현우</p>
@@ -46,17 +48,19 @@ export default async function Home() {
       <ul className="grid grid-cols-1 justify-center justify-items-center gap-y-4 py-10 lg:grid-cols-3 lg:gap-y-8">
         {results.map((result, index) => {
           return (
-            <Card
-              key={result.id}
-              href={`/post/${result.id}`}
-              alt={result.properties['설명'].rich_text[0].plain_text}
-              src={result.properties['이미지'].files[0].file.url}
-              title={result.properties['이름'].title[0].plain_text}
-              desc={result.properties['설명'].rich_text[0].plain_text}
-              createdTime={result.created_time}
-              lastEditedTime={result.last_edited_time}
-              priority={index < ON_THE_FIRST_SCREEN ? true : false}
-            />
+            <li key={result.id}>
+              <Link href={`/post/${result.id}`}>
+                <Card
+                  alt={result.properties['설명'].rich_text[0].plain_text}
+                  src={result.properties['이미지'].files[0].file.url}
+                  title={result.properties['이름'].title[0].plain_text}
+                  desc={result.properties['설명'].rich_text[0].plain_text}
+                  createdTime={result.created_time}
+                  lastEditedTime={result.last_edited_time}
+                  priority={index < ON_THE_FIRST_SCREEN ? true : false}
+                />
+              </Link>
+            </li>
           );
         })}
       </ul>
