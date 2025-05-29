@@ -58,7 +58,7 @@ export const TabItem = ({ isActive, children, onClick, className }: TabItemProps
   return (
     <li
       role="tab"
-      className={`inline-block w-16 transform-gpu text-center transition-transform duration-200 md:hover:scale-105 ${isActive ? 'font-bold text-[#333d4b]' : 'text-[#6b7684] md:hover:font-medium'} ${onClick ? 'cursor-pointer' : ''} ${className}`}
+      className={`inline-block w-16 transform-gpu text-center transition-transform duration-200 lg:hover:scale-105 ${isActive ? 'font-bold text-[#333d4b]' : 'text-[#6b7684] lg:hover:font-medium'} ${onClick ? 'cursor-pointer' : ''} ${className}`}
       aria-selected={isActive}
       ref={isActive ? setRef : null}
       onClick={onClick}

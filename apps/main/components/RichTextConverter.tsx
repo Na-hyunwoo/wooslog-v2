@@ -30,7 +30,7 @@ export const RichTextConverter = (richText: RichText) => {
   if (href) {
     content = (
       <a
-        className="text-[#6B7684] underline hover:text-black"
+        className="text-[#6B7684] underline lg:hover:text-black"
         href={href}
         target="_blank"
         rel="noopener noreferrer"

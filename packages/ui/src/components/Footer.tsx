@@ -8,10 +8,10 @@ export const Footer = () => {
     <footer className="flex flex-col items-center py-5">
       <div className="flex items-center gap-x-2">
         <a href={URL.GITHUB} target="_blank" rel="noopener noreferrer">
-          <Github className="transition-transform duration-200 hover:scale-110" />
+          <Github className="transition-transform duration-200 lg:hover:scale-110" />
         </a>
         <a href={URL.LINKEDIN} target="_blank" rel="noopener noreferrer">
-          <Linkedin className="transition-transform duration-200 hover:scale-110" />
+          <Linkedin className="transition-transform duration-200 lg:hover:scale-110" />
         </a>
       </div>
       <p>© {currentYear}. nahyunwoo all rights reserved.</p>
