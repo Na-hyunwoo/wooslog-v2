@@ -61,7 +61,7 @@ export default async function Detail({ params }: { params: Promise<{ id: string 
   const renderDate = isModify ? `${formattedDate} (수정됨)` : formattedDate;
 
   return (
-    <main className="mx-auto max-w-2xl py-16">
+    <main className="mx-auto max-w-2xl py-16 px-2 break-all">
       <CustomImage
         src={properties.이미지.files[0].file.url}
         alt={properties.이미지.files[0].file.url}

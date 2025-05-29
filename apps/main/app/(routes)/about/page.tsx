@@ -2,7 +2,7 @@ import Image from 'next/image';
 
 export default function About() {
   return (
-    <main className="mx-auto max-w-screen-sm py-8">
+    <main className="mx-auto max-w-screen-sm py-8 px-2 break-all">
       <Image
         src="/avatar.png"
         alt="nahyunwoo"
