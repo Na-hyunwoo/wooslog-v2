@@ -5,8 +5,6 @@ import { Card } from '../components';
 import { DATABASE_ID, ON_THE_FIRST_SCREEN, URL } from '../const';
 import { DatabaseResultType } from '../types';
 
-export const revalidate = 3600;
-
 export default async function Home() {
   const res = await fetch(URL.DATABASES(DATABASE_ID.POST), {
     headers: {

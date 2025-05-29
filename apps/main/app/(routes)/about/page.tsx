@@ -1,7 +1,5 @@
 import Image from 'next/image';
 
-export const revalidate = 3600;
-
 export default function About() {
   return (
     <main className="mx-auto max-w-screen-sm py-8">

@@ -5,8 +5,6 @@ import { DATABASE_ID, URL } from '../../../../const';
 import { BlockInterface, DatabaseResultType, PageInterface } from '../../../../types';
 import { makeBlocksGroup } from '../../../../utils/makeBlocksGroup';
 
-export const revalidate = 3600;
-
 export const dynamicParams = true;
 
 export const generateStaticParams = async () => {
