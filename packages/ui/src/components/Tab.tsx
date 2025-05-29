@@ -49,15 +49,16 @@ type TabItemProps = {
   isActive: boolean;
   children: ReactNode;
   onClick?: () => void;
+  className?: string;
 };
 
-export const TabItem = ({ isActive, children, onClick }: TabItemProps) => {
+export const TabItem = ({ isActive, children, onClick, className }: TabItemProps) => {
   const { setRef } = useTabContext();
 
   return (
     <li
       role="tab"
-      className={`inline-block w-16 transform-gpu text-center transition-transform duration-200 hover:scale-105 ${isActive ? 'font-bold text-[#333d4b]' : 'text-[#6b7684] hover:font-medium'} ${onClick ? 'cursor-pointer' : ''}`}
+      className={`inline-block w-16 transform-gpu text-center transition-transform duration-200 md:hover:scale-105 ${isActive ? 'font-bold text-[#333d4b]' : 'text-[#6b7684] md:hover:font-medium'} ${onClick ? 'cursor-pointer' : ''} ${className}`}
       aria-selected={isActive}
       ref={isActive ? setRef : null}
       onClick={onClick}
