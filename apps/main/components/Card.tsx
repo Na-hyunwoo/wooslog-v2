@@ -29,15 +29,15 @@ export const Card = ({
   });
   const renderDate = isModify ? `${formattedDate} (수정됨)` : formattedDate;
   return (
-    <div className="block transform transition-transform duration-300 hover:-translate-y-2 shadow-[0_15px_30px_0_rgba(0,0,0,0.05)] overflow-hidden rounded-2xl">
-      <div className="relative h-[135px] w-[240px] lg:h-[210px] lg:w-[330px]">
+    <div className="block transform transition-transform duration-300 lg:hover:-translate-y-2 shadow-[0_15px_30px_0_rgba(0,0,0,0.05)] overflow-hidden rounded-2xl w-[360px] md:w-[480px]">
+      <div className="relative w-full aspect-[360/202] md:aspect-[480/269]">
         <Image
           fill
           className={`object-cover transition-opacity duration-500 ${
             isLoaded ? 'opacity-100' : 'opacity-0'
           }`}
-          onLoadingComplete={() => setIsLoaded(true)}
-          sizes="(max-width: 1024px) 240px, 320px"
+          onLoad={() => setIsLoaded(true)}
+          sizes="330px"
           alt={alt}
           src={src}
           {...props}
