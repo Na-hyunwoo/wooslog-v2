@@ -142,5 +142,6 @@ export type PageInterface = {
   properties: {
     이름: { title: Title[] };
     이미지: { files: File[] };
+    설명: { rich_text: RichText[] };
   };
 };

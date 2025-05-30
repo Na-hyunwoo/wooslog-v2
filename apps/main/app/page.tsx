@@ -2,8 +2,22 @@ import Image from 'next/image';
 import Link from 'next/link';
 
 import { Card } from '../components';
+import { HomePageSchema } from '../components/HomePageSchema';
 import { DATABASE_ID, ON_THE_FIRST_SCREEN, URL } from '../const';
 import { DatabaseResultType } from '../types';
+
+export const metadata = {
+  description:
+    '호기심이 이끄는 대로 기술을 탐험하고, 생각의 깊이를 더해가는 공간. 실무에서 놓친 고민들을 되살려 더 나은 개발자로 성장하는 기록.',
+  openGraph: {
+    description:
+      '호기심이 이끄는 대로 기술을 탐험하고, 생각의 깊이를 더해가는 공간. 실무에서 놓친 고민들을 되살려 더 나은 개발자로 성장하는 기록.',
+    images: ['/avatar.png'],
+    title: '나현우 블로그',
+    type: 'website',
+  },
+  title: '홈',
+};
 
 export default async function Home() {
   const res = await fetch(URL.DATABASES(DATABASE_ID.POST), {
@@ -18,6 +32,7 @@ export default async function Home() {
 
   return (
     <main className="mx-auto max-w-screen-lg flex flex-col items-center">
+      <HomePageSchema />
       <h1 className="text-center text-2xl font-bold mt-10 hidden lg:block">
         호기심이 이끄는 대로 기술을 탐험하고, 생각의 깊이를 더해가는 공간. <br />
         실무에서 놓친 고민들을 되살려 더 나은 개발자로 성장하는 기록.
@@ -25,7 +40,7 @@ export default async function Home() {
       <section className="flex items-center justify-center gap-x-4 my-10 shadow-[0_2px_33px_rgba(0,0,0,0.25)] rounded-2xl p-4 w-fit mx-2">
         <Image
           src="/avatar.png"
-          alt="nahyunwoo"
+          alt="avatar"
           width={80}
           height={80}
           className="rounded-full shadow-2xl"

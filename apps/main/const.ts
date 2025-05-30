@@ -16,3 +16,5 @@ export const DATABASE_ID = {
 } as const;
 
 export const ON_THE_FIRST_SCREEN = 6;
+
+export const BASE_URL = 'https://devna.xyz';

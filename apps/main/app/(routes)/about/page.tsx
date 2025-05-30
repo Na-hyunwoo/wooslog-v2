@@ -1,8 +1,27 @@
 import Image from 'next/image';
 
+import { AboutPageSchema } from '../../../components/AboutPageSchema';
+
+import type { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  description:
+    '프론트엔드 개발자 나현우입니다. 확장성을 고려한 코드 작성을 중요하게 생각하며, 지속 가능한 방식으로 성장하는 방법에 대해 고민합니다.',
+  openGraph: {
+    description:
+      '프론트엔드 개발자 나현우입니다. 확장성을 고려한 코드 작성을 중요하게 생각하며, 지속 가능한 방식으로 성장하는 방법에 대해 고민합니다.',
+    images: ['/avatar.png'],
+    title: '나현우 소개',
+    type: 'profile',
+  },
+  title: '소개',
+};
+
 export default function About() {
   return (
     <main className="mx-auto max-w-screen-sm py-8 px-2 break-all">
+      <AboutPageSchema />
+
       <Image
         src="/avatar.png"
         alt="nahyunwoo"

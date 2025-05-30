@@ -2,6 +2,7 @@ import { Footer } from '@wooslog/ui';
 import { ReactNode } from 'react';
 
 import { Header } from '../components';
+import { BASE_URL } from '../const';
 
 import type { Metadata } from 'next';
 
@@ -9,8 +10,47 @@ import '@wooslog/ui/styles.css';
 import './globals.css';
 
 export const metadata: Metadata = {
+  authors: [{ name: '나현우' }],
+  creator: '나현우',
   description: '나현우의 기술적인 고민을 담은 블로그',
-  title: '나현우 블로그',
+  keywords: ['웹 개발', '프론트엔드', 'React', 'Next.js', '기술 블로그', '개발자'],
+  openGraph: {
+    description: '나현우의 기술적인 고민을 담은 블로그',
+    images: [
+      {
+        alt: '나현우 블로그',
+        height: 80,
+        url: '/avatar.png',
+        width: 80,
+      },
+    ],
+    locale: 'ko_KR',
+    siteName: '나현우 블로그',
+    title: '나현우 블로그',
+    type: 'website',
+    url: BASE_URL,
+  },
+  other: {
+    'linkedin:card': 'summary_large_image',
+    'linkedin:creator': '나현우',
+    'linkedin:description': '나현우의 기술적인 고민을 담은 블로그',
+    'linkedin:image': `${BASE_URL}/avatar.png`,
+    'linkedin:title': '나현우 블로그',
+  },
+  publisher: '나현우',
+  robots: 'index, follow',
+  title: {
+    default: '나현우 블로그',
+    template: '%s | 나현우 블로그',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    creator: '@devna',
+    description: '나현우의 기술적인 고민을 담은 블로그',
+    images: ['/avatar.png'],
+    title: '나현우 블로그',
+  },
+  viewport: 'width=device-width, initial-scale=1.0, user-scalable=no',
 };
 
 export default function RootLayout({
@@ -22,7 +62,6 @@ export default function RootLayout({
     return (
       <html lang="ko">
         <head>
-          <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
           <link rel="preconnect" href="https://cdn.jsdelivr.net" crossOrigin="anonymous" />
           <link
             rel="stylesheet"
