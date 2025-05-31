@@ -20,13 +20,6 @@ export const metadata = {
     type: 'website',
   },
   title: '홈',
-  twitter: {
-    card: 'summary_large_image',
-    description:
-      '호기심이 이끄는 대로 기술을 탐험하고, 생각의 깊이를 더해가는 공간. 실무에서 놓친 고민들을 되살려 더 나은 개발자로 성장하는 기록.',
-    images: [`${BASE_URL}/avatar.png`],
-    title: '나현우 블로그',
-  },
 };
 
 export default async function Home() {

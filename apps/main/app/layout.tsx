@@ -47,7 +47,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     creator: '@devna',
     description: '나현우의 기술적인 고민을 담은 블로그',
-    images: ['/avatar.png'],
+    images: [`${BASE_URL}/avatar.png`],
     title: '나현우 블로그',
   },
 };
