@@ -112,33 +112,22 @@ jobs:
             }
             EOL
 
-            # nginx 앱 설정 파일 생성 - 우선 HTTP 서비스부터 확인
+            # nginx 앱 설정 파일 생성 (HTTP만 사용)
             cat > ~/nginx/conf.d/app.conf << 'EOL'
             server {
                 listen 80;
-                server_name devna.xyz www.devna.xyz;
                 
-                # Let's Encrypt 인증 경로
-                location /.well-known/acme-challenge/ {
-                    root /var/www/certbot;
-                }
-                
-                # 일단 HTTP만 사용하도록 설정 (나중에 HTTPS 설정 가능)
                 location / {
                     proxy_pass http://main-app:3000;
                     proxy_set_header Host $host;
                     proxy_set_header X-Real-IP $remote_addr;
                     proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-                    proxy_set_header X-Forwarded-Proto $scheme;
                 }
             }
-
-            # HTTPS 설정은 인증서 발급 후 직접 추가할 예정
             EOL
 
             # docker-compose 파일 생성
             cat > ~/docker-compose.yml << 'EOL'
-            version: '3'
 
             services:
               main-app:
@@ -184,6 +173,16 @@ jobs:
                   - main-app
                 networks:
                   - app-network
+                command: "/bin/sh -c 'while :; do sleep 6h & wait $${!}; nginx -s reload; done & nginx -g \"daemon off;\"'"
+
+              # certbot 서비스는 도메인 설정 후 활성화
+              # certbot:
+              #   image: certbot/certbot
+              #   container_name: certbot
+              #   volumes:
+              #     - ./certbot/conf:/etc/letsencrypt
+              #     - ./certbot/www:/var/www/certbot
+              #   entrypoint: "/bin/sh -c 'trap exit TERM; while :; do certbot renew; sleep 12h & wait $${!}; done;'"
 
             networks:
               app-network:
@@ -198,16 +197,6 @@ jobs:
             cd ~
             docker-compose down
             docker-compose up -d
-
-            # HTTPS 설정 안내 출력
-            echo "====================================="
-            echo "사이트가 HTTP로 배포되었습니다."
-            echo "HTTPS 설정을 위해 다음 단계를 따르세요:"
-            echo "1. 사이트가 HTTP로 정상 작동하는지 확인"
-            echo "2. 서버에 접속하여 다음 명령 실행:"
-            echo "   docker run --rm -it --name certbot -v ~/certbot/conf:/etc/letsencrypt -v ~/certbot/www:/var/www/certbot certbot/certbot certonly --webroot -w /var/www/certbot -d devna.xyz -d www.devna.xyz --email contactharry97@gmail.com --agree-tos --no-eff-email"
-            echo "3. 인증서 발급 후 Nginx 설정 업데이트"
-            echo "====================================="
 
             # 미사용 이미지 정리
             docker image prune -af
