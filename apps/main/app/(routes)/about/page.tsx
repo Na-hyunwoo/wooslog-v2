@@ -20,7 +20,7 @@ export const metadata: Metadata = {
 
 export default function About() {
   return (
-    <main className="mx-auto max-w-screen-sm py-8 px-2 break-all">
+    <main className="mx-auto max-w-screen-sm py-8 px-4 break-all">
       <AboutPageSchema />
       <PageViewTracker pageType="about" />
 
@@ -49,7 +49,7 @@ export default function About() {
           중요한 문제들을 해결하였습니다.
         </p>
         <p>
-          2021년 12월, 운 좋게{' '}
+          2021년 12월{' '}
           <a
             href="https://wrtn.ai/"
             target="_blank"

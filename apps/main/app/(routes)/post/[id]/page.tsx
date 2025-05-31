@@ -115,7 +115,7 @@ export default async function Detail({ params }: { params: Promise<{ id: string 
   const renderDate = isModify ? `${formattedDate} (수정됨)` : formattedDate;
 
   return (
-    <main className="mx-auto max-w-2xl py-16 px-2 break-all">
+    <main className="mx-auto max-w-2xl py-16 px-4 break-all">
       <BlogPostingSchema
         authorName="나현우"
         dateModified={last_edited_time}
