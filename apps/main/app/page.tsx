@@ -3,6 +3,7 @@ import Link from 'next/link';
 
 import { Card } from '../components';
 import { HomePageSchema } from '../components/HomePageSchema';
+import { PageViewTracker } from '../components/PageViewTracker';
 import { DATABASE_ID, ON_THE_FIRST_SCREEN, URL } from '../const';
 import { DatabaseResultType } from '../types';
 
@@ -35,6 +36,7 @@ export default async function Home() {
   return (
     <main className="mx-auto max-w-screen-lg flex flex-col items-center">
       <HomePageSchema />
+      <PageViewTracker pageType="home" />
       <h1 className="text-center text-2xl font-bold mt-10 hidden lg:block">
         호기심이 이끄는 대로 기술을 탐험하고, 생각의 깊이를 더해가는 공간. <br />
         실무에서 놓친 고민들을 되살려 더 나은 개발자로 성장하는 기록.

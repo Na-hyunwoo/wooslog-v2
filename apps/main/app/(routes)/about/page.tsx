@@ -1,6 +1,7 @@
 import Image from 'next/image';
 
 import { AboutPageSchema } from '../../../components/AboutPageSchema';
+import { PageViewTracker } from '../../../components/PageViewTracker';
 
 import type { Metadata } from 'next';
 
@@ -21,6 +22,7 @@ export default function About() {
   return (
     <main className="mx-auto max-w-screen-sm py-8 px-2 break-all">
       <AboutPageSchema />
+      <PageViewTracker pageType="about" />
 
       <Image
         src="/avatar.png"

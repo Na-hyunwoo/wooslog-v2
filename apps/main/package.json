@@ -12,21 +12,24 @@
     "check-types": "tsc --noEmit"
   },
   "dependencies": {
+    "@supabase/supabase-js": "^2.49.8",
+    "@tailwindcss/postcss": "^4.0.14",
     "@wooslog/ui": "workspace:*",
+    "autoprefixer": "^10.4.21",
     "next": "15.2.2",
+    "postcss": "^8.5.3",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-syntax-highlighter": "^15.6.1",
-    "@tailwindcss/postcss": "^4.0.14",
-    "autoprefixer": "^10.4.21",
-    "postcss": "^8.5.3",
-    "tailwindcss": "^3.4.17"
+    "tailwindcss": "^3.4.17",
+    "uuid": "^11.1.0"
   },
   "devDependencies": {
     "@types/node": "^20",
     "@types/react": "^19.0.0",
     "@types/react-dom": "^19.0.0",
     "@types/react-syntax-highlighter": "^15.5.13",
+    "@types/uuid": "^10.0.0",
     "@wooslog/eslint-config": "workspace:*",
     "@wooslog/prettier-config": "workspace:*",
     "@wooslog/tailwind-config": "workspace:*",

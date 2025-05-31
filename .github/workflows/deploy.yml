@@ -66,6 +66,8 @@ jobs:
           cache-from: type=gha
           cache-to: type=gha,mode=max
           build-args: NOTION_API_KEY=${{ secrets.NOTION_API_KEY }}
+            - NEXT_PUBLIC_SUPABASE_URL=${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
+            - NEXT_PUBLIC_SUPABASE_ANON_KEY=${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
 
       - name: Deploy to server
         uses: appleboy/ssh-action@master
@@ -135,6 +137,8 @@ jobs:
                 environment:
                   - NODE_ENV=production
                   - NOTION_API_KEY=${{ secrets.NOTION_API_KEY }}
+                  - NEXT_PUBLIC_SUPABASE_URL=${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
+                  - NEXT_PUBLIC_SUPABASE_ANON_KEY=${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
                 volumes:
                   - app-data:/app/data
                   - ./logs:/app/logs

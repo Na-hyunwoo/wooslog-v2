@@ -2,6 +2,7 @@ import { Fragment } from 'react';
 
 import { BlockConverter, CustomImage, H1, P } from '../../../../components/BlockConverter';
 import { BlogPostingSchema } from '../../../../components/BlogPostingSchema';
+import { PageViewTracker } from '../../../../components/PageViewTracker';
 import { BASE_URL, DATABASE_ID, URL } from '../../../../const';
 import { BlockInterface, DatabaseResultType, PageInterface } from '../../../../types';
 import { makeBlocksGroup } from '../../../../utils/makeBlocksGroup';
@@ -124,6 +125,7 @@ export default async function Detail({ params }: { params: Promise<{ id: string 
         title={properties.이름.title[0].plain_text}
         url={`${BASE_URL}/post/${pageId}`}
       />
+      <PageViewTracker pageType="post" pageId={pageId} />
       <CustomImage
         src={properties.이미지.files[0].file.url}
         alt={properties.이름.title[0].plain_text}
