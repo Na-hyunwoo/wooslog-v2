@@ -6,6 +6,8 @@ import { HomePageSchema } from '../components/HomePageSchema';
 import { DATABASE_ID, ON_THE_FIRST_SCREEN, URL } from '../const';
 import { DatabaseResultType } from '../types';
 
+export const revalidate = 3600;
+
 export const metadata = {
   description:
     '호기심이 이끄는 대로 기술을 탐험하고, 생각의 깊이를 더해가는 공간. 실무에서 놓친 고민들을 되살려 더 나은 개발자로 성장하는 기록.',
@@ -72,6 +74,7 @@ export default async function Home() {
                   lastEditedTime={result.last_edited_time}
                   priority={index < ON_THE_FIRST_SCREEN ? true : false}
                 />
+                <img src={result.properties['이미지'].files[0].file.url} alt="image" />
               </Link>
             </li>
           );
