@@ -74,7 +74,6 @@ export default async function Home() {
                   lastEditedTime={result.last_edited_time}
                   priority={index < ON_THE_FIRST_SCREEN ? true : false}
                 />
-                <img src={result.properties['이미지'].files[0].file.url} alt="image" />
               </Link>
             </li>
           );
