@@ -34,9 +34,9 @@ export const generateStaticParams = async () => {
 export const generateMetadata = async ({
   params,
 }: {
-  params: { id: string };
+  params: Promise<{ id: string }>;
 }): Promise<Metadata> => {
-  const { id: pageId } = params;
+  const { id: pageId } = await params;
 
   try {
     const pageRes = await fetch(URL.PAGE(pageId), {

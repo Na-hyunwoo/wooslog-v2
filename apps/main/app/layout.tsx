@@ -50,7 +50,6 @@ export const metadata: Metadata = {
     images: ['/avatar.png'],
     title: '나현우 블로그',
   },
-  viewport: 'width=device-width, initial-scale=1.0, user-scalable=no',
 };
 
 export default function RootLayout({
@@ -63,6 +62,7 @@ export default function RootLayout({
       <html lang="ko">
         <head>
           <link rel="preconnect" href="https://cdn.jsdelivr.net" crossOrigin="anonymous" />
+          <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
           <link
             rel="stylesheet"
             as="style"
