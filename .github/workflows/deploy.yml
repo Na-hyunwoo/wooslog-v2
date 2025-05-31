@@ -112,31 +112,18 @@ jobs:
             }
             EOL
 
-            # nginx 앱 설정 파일 생성 (HTTP와 HTTPS 설정)
+            # nginx 앱 설정 파일 생성 - 우선 HTTP 서비스부터 확인
             cat > ~/nginx/conf.d/app.conf << 'EOL'
             server {
                 listen 80;
                 server_name devna.xyz www.devna.xyz;
                 
+                # Let's Encrypt 인증 경로
                 location /.well-known/acme-challenge/ {
                     root /var/www/certbot;
                 }
                 
-                location / {
-                    return 301 https://$host$request_uri;
-                }
-            }
-
-            server {
-                listen 443 ssl;
-                server_name devna.xyz www.devna.xyz;
-                
-                ssl_certificate /etc/letsencrypt/live/devna.xyz/fullchain.pem;
-                ssl_certificate_key /etc/letsencrypt/live/devna.xyz/privkey.pem;
-                
-                include /etc/letsencrypt/options-ssl-nginx.conf;
-                ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem;
-                
+                # 일단 HTTP만 사용하도록 설정 (나중에 HTTPS 설정 가능)
                 location / {
                     proxy_pass http://main-app:3000;
                     proxy_set_header Host $host;
@@ -145,29 +132,8 @@ jobs:
                     proxy_set_header X-Forwarded-Proto $scheme;
                 }
             }
-            EOL
 
-            # SSL 옵션 파일 생성
-            mkdir -p ~/certbot/conf/
-            cat > ~/certbot/conf/options-ssl-nginx.conf << 'EOL'
-            ssl_session_cache shared:le_nginx_SSL:10m;
-            ssl_session_timeout 1440m;
-            ssl_session_tickets off;
-            ssl_protocols TLSv1.2 TLSv1.3;
-            ssl_prefer_server_ciphers off;
-            ssl_ciphers "ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-CHACHA20-POLY1305:ECDHE-RSA-CHACHA20-POLY1305:DHE-RSA-AES128-GCM-SHA256:DHE-RSA-AES256-GCM-SHA384";
-            EOL
-
-            # SSL DH 파라미터 파일 생성
-            cat > ~/certbot/conf/ssl-dhparams.pem << 'EOL'
-            -----BEGIN DH PARAMETERS-----
-            MIIBCAKCAQEA//////////+t+FRYortKmq/cViAnPTzx2LnFg84tNpWp4TZBFGQz
-            +8yTnc4kmz75fS/jY2MMddj2gbICrsRhetPfHtXV/WVhJDP1H18GbtCFY2VVPe0a
-            87VXE15/V8k1mE8McODmi3fipona8+/och3xWKE2rec1MKzKT0g6eXq8CrGCsyT7
-            YdEIqUuyyOP7uWrat2DX9GgdT0Kj3jlN9K5W7edjcrsZCwenyO4KbXCeAvzhzffi
-            7MA0BM0oNC9hkXL+nOmFg/+OTxIy7vKBg8P+OxtMb61zO7X8vC7CIAXFjvGDfRaD
-            ssbzSibBsu/6iGtCOGEoXJf//////////wIBAg==
-            -----END DH PARAMETERS-----
+            # HTTPS 설정은 인증서 발급 후 직접 추가할 예정
             EOL
 
             # docker-compose 파일 생성
@@ -218,17 +184,6 @@ jobs:
                   - main-app
                 networks:
                   - app-network
-                command: "/bin/sh -c 'while :; do sleep 6h & wait $${!}; nginx -s reload; done & nginx -g \"daemon off;\"'"
-
-              certbot:
-                image: certbot/certbot
-                container_name: certbot
-                volumes:
-                  - ./certbot/conf:/etc/letsencrypt
-                  - ./certbot/www:/var/www/certbot
-                networks:
-                  - app-network
-                entrypoint: "/bin/sh -c 'trap exit TERM; while :; do certbot renew; sleep 12h & wait $${!}; done;'"
 
             networks:
               app-network:
@@ -239,73 +194,20 @@ jobs:
                 driver: local
             EOL
 
-            # 최초 인증서 발급 스크립트 생성
-            cat > ~/init-letsencrypt.sh << 'EOL'
-            #!/bin/bash
-
-            domains=(devna.xyz www.devna.xyz)
-            email="contactharry97@gmail.com"  
-            staging=0
-
-            data_path="./certbot"
-            rsa_key_size=4096
-
-            if [ -d "$data_path/conf/live" ]; then
-              read -p "기존 인증서 데이터가 발견되었습니다. 계속하시겠습니까? (y/N) " decision
-              if [ "$decision" != "Y" ] && [ "$decision" != "y" ]; then
-                exit
-              fi
-            fi
-
-            mkdir -p "$data_path/conf/live"
-
-            echo "Nginx 실행 중지..."
-            docker-compose down
-
-            echo "도메인 설정 다운로드 중..."
-            curl -s https://raw.githubusercontent.com/certbot/certbot/master/certbot-nginx/certbot_nginx/_internal/tls_configs/options-ssl-nginx.conf > "$data_path/conf/options-ssl-nginx.conf"
-            curl -s https://raw.githubusercontent.com/certbot/certbot/master/certbot/certbot/ssl-dhparams.pem > "$data_path/conf/ssl-dhparams.pem"
-
-            echo "더미 인증서 생성 중..."
-            for domain in "${domains[@]}"; do
-              mkdir -p "$data_path/conf/live/$domain"
-              
-              openssl req -x509 -nodes -newkey rsa:$rsa_key_size -days 1 \
-                -keyout "$data_path/conf/live/$domain/privkey.pem" \
-                -out "$data_path/conf/live/$domain/fullchain.pem" \
-                -subj "/CN=localhost"
-            done
-
-            echo "Docker 컨테이너 시작 중..."
-            docker-compose up -d nginx
-
-            echo "인증서 발급 중..."
-            for domain in "${domains[@]}"; do
-              docker-compose run --rm --entrypoint "\
-                certbot certonly --webroot -w /var/www/certbot \
-                  --email $email \
-                  -d $domain \
-                  --rsa-key-size $rsa_key_size \
-                  --agree-tos \
-                  --force-renewal \
-                  --non-interactive" certbot
-            done
-
-            echo "Docker 컨테이너 재시작 중..."
-            docker-compose down
-            docker-compose up -d
-
-            echo "완료!"
-            EOL
-
-            # 스크립트 실행 권한 부여
-            chmod +x ~/init-letsencrypt.sh
-
             # 배포 실행
             cd ~
             docker-compose down
-            ./init-letsencrypt.sh
             docker-compose up -d
+
+            # HTTPS 설정 안내 출력
+            echo "====================================="
+            echo "사이트가 HTTP로 배포되었습니다."
+            echo "HTTPS 설정을 위해 다음 단계를 따르세요:"
+            echo "1. 사이트가 HTTP로 정상 작동하는지 확인"
+            echo "2. 서버에 접속하여 다음 명령 실행:"
+            echo "   docker run --rm -it --name certbot -v ~/certbot/conf:/etc/letsencrypt -v ~/certbot/www:/var/www/certbot certbot/certbot certonly --webroot -w /var/www/certbot -d devna.xyz -d www.devna.xyz --email contactharry97@gmail.com --agree-tos --no-eff-email"
+            echo "3. 인증서 발급 후 Nginx 설정 업데이트"
+            echo "====================================="
 
             # 미사용 이미지 정리
             docker image prune -af
