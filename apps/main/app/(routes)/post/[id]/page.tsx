@@ -129,7 +129,6 @@ export default async function Detail({ params }: { params: Promise<{ id: string 
       <CustomImage
         src={properties.이미지.files[0].file.url}
         alt={properties.이름.title[0].plain_text}
-        className="object-cover"
       />
       <H1 className="mb-4">{properties.이름.title[0].plain_text}</H1>
       <P className="mb-8">{renderDate}</P>

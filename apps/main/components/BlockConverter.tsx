@@ -83,6 +83,7 @@ export const BlockConverter = (block: ConvertedBlockInterface) => {
         <CustomImage
           src={block.image.file?.url ?? ''}
           alt={block.image.caption?.map((t) => t.plain_text).join('') ?? ''}
+          caption={block.image.caption?.map((t) => t.plain_text).join('') ?? ''}
         />
       );
     default:
@@ -95,7 +96,7 @@ export const H1 = ({ children, className }: { children: React.ReactNode; classNa
 };
 
 export const H2 = ({ children, className }: { children: React.ReactNode; className?: string }) => {
-  return <h2 className={twMerge('mb-6 text-3xl font-bold', className)}>{children}</h2>;
+  return <h2 className={twMerge('my-6 text-3xl font-bold', className)}>{children}</h2>;
 };
 
 export const H3 = ({ children, className }: { children: React.ReactNode; className?: string }) => {
@@ -103,7 +104,7 @@ export const H3 = ({ children, className }: { children: React.ReactNode; classNa
 };
 
 export const P = ({ children, className }: { children: React.ReactNode; className?: string }) => {
-  return <p className={twMerge('mb-6', className)}>{children}</p>;
+  return <p className={twMerge('mb-3', className)}>{children}</p>;
 };
 
 export const Li = ({ children, className }: { children: React.ReactNode; className?: string }) => {
@@ -131,21 +132,26 @@ export const Pre = ({ children, className }: { children: React.ReactNode; classN
 export const CustomImage = ({
   src,
   alt,
+  caption,
   className,
 }: {
   src: string;
   alt: string;
+  caption?: string;
   className?: string;
 }) => {
   return (
-    <div className="w-2xl relative mb-6 aspect-[25/14] overflow-hidden rounded-2xl">
-      <Image
-        src={src}
-        alt={alt}
-        fill
-        className={twMerge('object-contain', className)}
-        sizes="672px"
-      />
+    <div className="mb-6">
+      <div className="w-2xl relative aspect-[25/14] overflow-hidden rounded-2xl">
+        <Image
+          src={src}
+          alt={alt}
+          fill
+          className={twMerge('object-cover', className)}
+          sizes="672px"
+        />
+      </div>
+      {caption && <p className="text-center text-sm text-gray-500">{caption}</p>}
     </div>
   );
 };
