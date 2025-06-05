@@ -1,9 +1,10 @@
-import { URL } from '../../../../const';
+import { DATABASE_ID, URL } from '../../../../const';
 import { cloudinaryApi } from '../../../../lib/cloudinary';
 import { getNotionHeaders } from '../../../../lib/notion';
 import {
   BlockInterface,
   BlockStructureInterface,
+  DatabaseResultType,
   ImageBlock,
   PageInterface,
   UpdateBlockParams,
@@ -104,6 +105,26 @@ export const updateBlock = async ({ id, body }: UpdateBlockParams) => {
   }
 };
 
+export const updatePage = async ({ id, body }: { id: string; body: any }) => {
+  try {
+    const res = await fetch(URL.PAGE(id), {
+      body: JSON.stringify(body),
+      headers: getNotionHeaders(),
+      method: 'PATCH',
+    });
+
+    if (!res.ok) {
+      const error = await res.json();
+
+      throw new Error(`Failed to patch page. ${error.status}: ${error.message}`);
+    }
+
+    return await res.json();
+  } catch (error) {
+    console.error(error);
+  }
+};
+
 export const addExternalUrlToAllImageBlocks = async (id: string) => {
   const blocks = await getAllBlocks(id);
   const imgBlocks = blocks.filter(
@@ -124,7 +145,7 @@ export const addExternalUrlToAllImageBlocks = async (id: string) => {
     try {
       const convertedUrl = await cloudinaryApi.converToCloudinaryImg({
         imgUrl: url,
-        title: `${id}_${index}`,
+        title: `post_${id}_${index}`,
       });
 
       if (!convertedUrl) {
@@ -145,6 +166,47 @@ export const addExternalUrlToAllImageBlocks = async (id: string) => {
       console.error(`블록 ${block.id} 처리 실패:`, error);
       return null;
     }
+  });
+
+  await Promise.all(updatePromises);
+};
+
+export const addExternalUrlToAllPageProperties = async (id: string) => {
+  const res = await fetch(URL.DATABASES(DATABASE_ID.POST), {
+    headers: getNotionHeaders(),
+    method: 'POST',
+  });
+
+  const { results = [] }: { results?: DatabaseResultType[] } = await res.json();
+  const filteredResults = results.filter((result) => result.properties.이미지.files[0].file?.url);
+
+  if (filteredResults.length === 0) {
+    return;
+  }
+
+  const updatePromises = filteredResults.map(async (result, index) => {
+    const imgUrl = result.properties.이미지.files[0].file?.url;
+    if (!imgUrl) {
+      return null;
+    }
+
+    const convertedUrl = await cloudinaryApi.converToCloudinaryImg({
+      imgUrl,
+      title: `homde_${id}_${index}`,
+    });
+
+    if (!convertedUrl) {
+      return null;
+    }
+
+    return updatePage({
+      body: {
+        properties: {
+          이미지: { files: [{ external: { url: convertedUrl } }] },
+        },
+      },
+      id: result.id,
+    });
   });
 
   await Promise.all(updatePromises);

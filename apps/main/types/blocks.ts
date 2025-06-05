@@ -1,5 +1,8 @@
 type File = {
-  file: {
+  external?: {
+    url: string;
+  };
+  file?: {
     url: string;
   };
 };

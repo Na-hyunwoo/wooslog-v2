@@ -8,6 +8,8 @@ import { BASE_URL, DATABASE_ID, ON_THE_FIRST_SCREEN, URL } from '../const';
 import { getNotionHeaders } from '../lib/notion';
 import { DatabaseResultType } from '../types';
 
+import { addExternalUrlToAllPageProperties } from './(routes)/post/[id]/apis';
+
 export const revalidate = 3600;
 
 export const metadata = {
@@ -24,6 +26,7 @@ export const metadata = {
 };
 
 export default async function Home() {
+  await addExternalUrlToAllPageProperties(DATABASE_ID.POST);
   const res = await fetch(URL.DATABASES(DATABASE_ID.POST), {
     headers: getNotionHeaders(),
     method: 'POST',
@@ -66,7 +69,7 @@ export default async function Home() {
               <Link href={`/post/${result.id}`}>
                 <Card
                   alt={result.properties['설명'].rich_text[0].plain_text}
-                  src={result.properties['이미지'].files[0].file.url}
+                  src={result.properties['이미지'].files[0].external?.url ?? ''}
                   title={result.properties['이름'].title[0].plain_text}
                   desc={result.properties['설명'].rich_text[0].plain_text}
                   createdTime={result.created_time}
