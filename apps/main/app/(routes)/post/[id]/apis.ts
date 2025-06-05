@@ -105,7 +105,17 @@ export const updateBlock = async ({ id, body }: UpdateBlockParams) => {
   }
 };
 
-export const updatePage = async ({ id, body }: { id: string; body: any }) => {
+export const updatePage = async ({
+  id,
+  body,
+}: {
+  id: string;
+  body: {
+    properties: {
+      이미지: { files: [{ external: { url: string } }] };
+    };
+  };
+}) => {
   try {
     const res = await fetch(URL.PAGE(id), {
       body: JSON.stringify(body),
@@ -178,7 +188,7 @@ export const addExternalUrlToAllPageProperties = async (id: string) => {
   });
 
   const { results = [] }: { results?: DatabaseResultType[] } = await res.json();
-  const filteredResults = results.filter((result) => result.properties.이미지.files[0].file?.url);
+  const filteredResults = results.filter((result) => result.properties.이미지.files[0]?.file?.url);
 
   if (filteredResults.length === 0) {
     return;

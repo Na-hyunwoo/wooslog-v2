@@ -64,12 +64,17 @@ export default async function Home() {
       </section>
       <ul className="grid grid-cols-1 lg:grid-cols-2 gap-y-12 justify-center justify-items-center py-10 w-full">
         {results.map((result, index) => {
+          const imageUrl =
+            result.properties['이미지'].files[0]?.external?.url ||
+            result.properties['이미지'].files[0]?.file?.url ||
+            '';
+
           return (
             <li key={result.id}>
               <Link href={`/post/${result.id}`}>
                 <Card
                   alt={result.properties['설명'].rich_text[0].plain_text}
-                  src={result.properties['이미지'].files[0].external?.url ?? ''}
+                  src={imageUrl}
                   title={result.properties['이름'].title[0].plain_text}
                   desc={result.properties['설명'].rich_text[0].plain_text}
                   createdTime={result.created_time}

@@ -100,13 +100,17 @@ export default async function Detail({ params }: { params: Promise<{ id: string 
         dateModified={last_edited_time}
         datePublished={created_time}
         description={description}
-        imageUrl={properties.이미지.files[0].external?.url ?? ''}
+        imageUrl={
+          properties.이미지.files[0]?.external?.url || properties.이미지.files[0]?.file?.url || ''
+        }
         title={properties.이름.title[0].plain_text}
         url={`${BASE_URL}/post/${pageId}`}
       />
       <PageViewTracker pageType="post" pageId={pageId} />
       <CustomImage
-        src={properties.이미지.files[0].external?.url ?? ''}
+        src={
+          properties.이미지.files[0]?.external?.url || properties.이미지.files[0]?.file?.url || ''
+        }
         alt={properties.이름.title[0].plain_text}
       />
       <H1 className="mb-4">{properties.이름.title[0].plain_text}</H1>
