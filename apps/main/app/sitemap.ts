@@ -1,6 +1,7 @@
 import { MetadataRoute } from 'next';
 
 import { BASE_URL, DATABASE_ID, URL } from '../const';
+import { getNotionHeaders } from '../lib/notion';
 import { DatabaseResultType } from '../types';
 
 // 기본 라우트(홈, About 페이지)를 반환하는 함수
@@ -28,11 +29,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   try {
     // Notion API에서 포스트 데이터 가져오기
     const res = await fetch(URL.DATABASES(DATABASE_ID.POST), {
-      headers: {
-        Authorization: `Bearer ${process.env.NOTION_API_KEY}`,
-        'Content-Type': 'application/json',
-        'Notion-Version': '2022-06-28',
-      },
+      headers: getNotionHeaders(),
       method: 'POST',
     });
 

@@ -5,6 +5,10 @@ const nextConfig = {
         hostname: 'prod-files-secure.s3.us-west-2.amazonaws.com',
         protocol: 'https',
       },
+      {
+        hostname: 'res.cloudinary.com',
+        protocol: 'https',
+      },
     ],
   },
 };

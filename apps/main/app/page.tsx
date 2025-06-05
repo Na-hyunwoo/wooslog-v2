@@ -5,6 +5,7 @@ import { Card } from '../components';
 import { HomePageSchema } from '../components/HomePageSchema';
 import { PageViewTracker } from '../components/PageViewTracker';
 import { BASE_URL, DATABASE_ID, ON_THE_FIRST_SCREEN, URL } from '../const';
+import { getNotionHeaders } from '../lib/notion';
 import { DatabaseResultType } from '../types';
 
 export const revalidate = 3600;
@@ -24,11 +25,7 @@ export const metadata = {
 
 export default async function Home() {
   const res = await fetch(URL.DATABASES(DATABASE_ID.POST), {
-    headers: {
-      Authorization: `Bearer ${process.env.NOTION_API_KEY}`,
-      'Content-Type': 'application/json',
-      'Notion-Version': '2022-06-28',
-    },
+    headers: getNotionHeaders(),
     method: 'POST',
   });
   const { results = [] }: { results?: DatabaseResultType[] } = await res.json();

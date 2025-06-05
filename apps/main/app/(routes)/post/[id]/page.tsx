@@ -4,8 +4,11 @@ import { BlockConverter, CustomImage, H1, P } from '../../../../components/Block
 import { BlogPostingSchema } from '../../../../components/BlogPostingSchema';
 import { PageViewTracker } from '../../../../components/PageViewTracker';
 import { BASE_URL, DATABASE_ID, URL } from '../../../../const';
-import { BlockInterface, DatabaseResultType, PageInterface } from '../../../../types';
+import { getNotionHeaders } from '../../../../lib/notion';
+import { DatabaseResultType, PageInterface } from '../../../../types';
 import { makeBlocksGroup } from '../../../../utils/makeBlocksGroup';
+
+import { addExternalUrlToAllImageBlocks, getAllBlocks, getPage } from './apis';
 
 import type { Metadata } from 'next';
 
@@ -18,11 +21,7 @@ export const generateMetadata = async ({
 
   try {
     const pageRes = await fetch(URL.PAGE(pageId), {
-      headers: {
-        Authorization: `Bearer ${process.env.NOTION_API_KEY}`,
-        'Content-Type': 'application/json',
-        'Notion-Version': '2022-06-28',
-      },
+      headers: getNotionHeaders(),
       method: 'GET',
     });
 
@@ -63,11 +62,7 @@ export const dynamicParams = true;
 export const generateStaticParams = async () => {
   try {
     const res = await fetch(URL.DATABASES(DATABASE_ID.POST), {
-      headers: {
-        Authorization: `Bearer ${process.env.NOTION_API_KEY}`,
-        'Content-Type': 'application/json',
-        'Notion-Version': '2022-06-28',
-      },
+      headers: getNotionHeaders(),
       method: 'POST',
     });
     const { results = [] }: { results?: DatabaseResultType[] } = await res.json();
@@ -83,27 +78,11 @@ export const generateStaticParams = async () => {
 
 export default async function Detail({ params }: { params: Promise<{ id: string }> }) {
   const { id: pageId } = await params;
+  await addExternalUrlToAllImageBlocks(pageId);
+  const blocks = await getAllBlocks(pageId);
 
-  const blockRes = await fetch(URL.BLOCKS(pageId), {
-    headers: {
-      Authorization: `Bearer ${process.env.NOTION_API_KEY}`,
-      'Content-Type': 'application/json',
-      'Notion-Version': '2022-06-28',
-    },
-    method: 'GET',
-  });
-  const { results: blocks }: { results: BlockInterface[] } = await blockRes.json();
-
-  const pageRes = await fetch(URL.PAGE(pageId), {
-    headers: {
-      Authorization: `Bearer ${process.env.NOTION_API_KEY}`,
-      'Content-Type': 'application/json',
-      'Notion-Version': '2022-06-28',
-    },
-    method: 'GET',
-  });
-  const { created_time, last_edited_time, properties }: PageInterface = await pageRes.json();
-  const description = properties.설명?.rich_text?.[0]?.plain_text || '';
+  const { created_time, last_edited_time, properties } = await getPage(pageId);
+  const description = properties.설명.rich_text[0].plain_text;
 
   const isModify = created_time !== last_edited_time;
   const date = new Date(isModify ? last_edited_time : created_time);

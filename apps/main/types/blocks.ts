@@ -145,3 +145,14 @@ export type PageInterface = {
     설명: { rich_text: RichText[] };
   };
 };
+
+export type UpdateBlockParams = {
+  id: string;
+  body: {
+    image?: {
+      external: {
+        url: string;
+      };
+    };
+  };
+};

@@ -5,7 +5,12 @@ export const ROUTES = {
 } as const;
 
 export const URL = {
-  BLOCKS: (id: string) => `https://api.notion.com/v1/blocks/${id}/children`,
+  BLOCKS_CHILDREN: (id: string, cursor: string | null = null) => {
+    const url = `https://api.notion.com/v1/blocks/${id}/children`;
+
+    return cursor ? `${url}?start_cursor=${cursor}` : url;
+  },
+  BLOCKS: (id: string) => `https://api.notion.com/v1/blocks/${id}`,
   DATABASES: (id: string) => `https://api.notion.com/v1/databases/${id}/query`,
   PAGE: (id: string) => `https://api.notion.com/v1/pages/${id}`,
 } as const;
