@@ -1,6 +1,6 @@
 import { ReactNode } from 'react';
 
-import { RichText } from '../types';
+import { RichText } from '@/types';
 
 export const RichTextConverter = (richText: RichText) => {
   const text = richText.plain_text;

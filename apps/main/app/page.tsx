@@ -1,14 +1,11 @@
 import Image from 'next/image';
 import Link from 'next/link';
 
-import { Card } from '../components';
-import { HomePageSchema } from '../components/HomePageSchema';
-import { PageViewTracker } from '../components/PageViewTracker';
-import { BASE_URL, DATABASE_ID, ON_THE_FIRST_SCREEN, URL } from '../const';
-import { getNotionHeaders } from '../lib/notion';
-import { DatabaseResultType } from '../types';
-
-import { addExternalUrlToAllPageProperties } from './(routes)/post/[id]/apis';
+import { addExternalUrlToAllPageProperties } from '@/apis';
+import { Card, HomePageSchema, PageViewTracker } from '@/components';
+import { BASE_URL, DATABASE_ID, ON_THE_FIRST_SCREEN, URL } from '@/const';
+import { getNotionHeaders } from '@/lib/notion';
+import { DatabaseResultType } from '@/types';
 
 export const revalidate = 3600;
 

@@ -1,8 +1,8 @@
 import { MetadataRoute } from 'next';
 
-import { BASE_URL, DATABASE_ID, URL } from '../const';
-import { getNotionHeaders } from '../lib/notion';
-import { DatabaseResultType } from '../types';
+import { BASE_URL, DATABASE_ID, URL } from '@/const';
+import { getNotionHeaders } from '@/lib/notion';
+import { DatabaseResultType } from '@/types';
 
 // 기본 라우트(홈, About 페이지)를 반환하는 함수
 const getBasicRoutes = (currentDate: string): MetadataRoute.Sitemap => {

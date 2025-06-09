@@ -1,16 +1,20 @@
 import { Fragment } from 'react';
 
-import { BlockConverter, CustomImage, H1, P } from '../../../../components/BlockConverter';
-import { BlogPostingSchema } from '../../../../components/BlogPostingSchema';
-import { PageViewTracker } from '../../../../components/PageViewTracker';
-import { BASE_URL, DATABASE_ID, URL } from '../../../../const';
-import { getNotionHeaders } from '../../../../lib/notion';
-import { DatabaseResultType, PageInterface } from '../../../../types';
-import { makeBlocksGroup } from '../../../../utils/makeBlocksGroup';
-
-import { addExternalUrlToAllImageBlocks, getAllBlocks, getPage } from './apis';
-
 import type { Metadata } from 'next';
+
+import { addExternalUrlToAllImageBlocks, getAllBlocks, getPage } from '@/apis';
+import {
+  BlockConverter,
+  CustomImage,
+  H1,
+  P,
+  BlogPostingSchema,
+  PageViewTracker,
+} from '@/components';
+import { BASE_URL, DATABASE_ID, URL } from '@/const';
+import { getNotionHeaders } from '@/lib/notion';
+import { DatabaseResultType, PageInterface } from '@/types';
+import { makeBlocksGroup } from '@/utils/makeBlocksGroup';
 
 export const generateMetadata = async ({
   params,

@@ -6,7 +6,7 @@ import { twMerge } from 'tailwind-merge';
 
 import { RichTextConverter } from './RichTextConverter';
 
-import type { ConvertedBlockInterface } from '../types';
+import type { ConvertedBlockInterface } from '@/types';
 
 export const BlockConverter = (block: ConvertedBlockInterface) => {
   switch (block.type) {

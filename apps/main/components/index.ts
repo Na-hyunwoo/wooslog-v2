@@ -4,3 +4,7 @@ export * from './Header';
 export * from './Logo';
 export * from './Nav';
 export * from './RichTextConverter';
+export * from './BlogPostingSchema';
+export * from './PageViewTracker';
+export * from './AboutPageSchema';
+export * from './HomePageSchema';

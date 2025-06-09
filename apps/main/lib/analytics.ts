@@ -1,8 +1,7 @@
 import { v4 as uuidv4 } from 'uuid';
 
-import { isBrowser } from '../utils/isBrowser';
-
-import { supabase } from './supabase';
+import { supabase } from '@/lib/supabase';
+import { isBrowser } from '@/utils/isBrowser';
 
 // 세션 ID 저장용 쿠키 이름
 const SESSION_COOKIE_NAME = 'devna_session';

@@ -2,7 +2,7 @@
 
 import { useEffect } from 'react';
 
-import { trackPageView } from '../lib/analytics';
+import { trackPageView } from '@/lib/analytics';
 
 interface PageViewTrackerProps {
   pageType: 'home' | 'post' | 'about';

@@ -3,7 +3,7 @@ import {
   BulletedListItemBlockGroup,
   ConvertedBlockInterface,
   NumberedListItemBlockGroup,
-} from '../types';
+} from '@/types';
 
 export const makeBlocksGroup = (blocks: BlockInterface[]) => {
   const results: ConvertedBlockInterface[] = [];

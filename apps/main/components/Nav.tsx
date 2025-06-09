@@ -4,7 +4,7 @@ import { Tab } from '@wooslog/ui';
 import { usePathname, useRouter } from 'next/navigation';
 import { useState, useEffect } from 'react';
 
-import { ROUTES } from '../const';
+import { ROUTES } from '@/const';
 
 export const Nav = () => {
   const pathname = usePathname();

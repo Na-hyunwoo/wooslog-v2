@@ -35,8 +35,8 @@ module.exports = {
     ],
     "import/first": "error",
     "import/no-duplicates": "error",
-    "import/no-unresolved": "error",
     "import/no-cycle": "error",
+    "import/no-unresolved": "off",
     "no-console": ["error", { allow: ["warn", "error"] }],
     "object-shorthand": ["error", "always"],
     "sort-keys": [

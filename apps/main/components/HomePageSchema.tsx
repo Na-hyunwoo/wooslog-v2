@@ -1,6 +1,6 @@
 import Script from 'next/script';
 
-import { BASE_URL } from '../const';
+import { BASE_URL } from '@/const';
 
 export const HomePageSchema = () => {
   const schema = {

@@ -1,6 +1,6 @@
-import { DATABASE_ID, URL } from '../../../../const';
-import { cloudinaryApi } from '../../../../lib/cloudinary';
-import { getNotionHeaders } from '../../../../lib/notion';
+import { DATABASE_ID, URL } from '@/const';
+import { cloudinaryApi } from '@/lib/cloudinary';
+import { getNotionHeaders } from '@/lib/notion';
 import {
   BlockInterface,
   BlockStructureInterface,
@@ -8,7 +8,7 @@ import {
   ImageBlock,
   PageInterface,
   UpdateBlockParams,
-} from '../../../../types/blocks';
+} from '@/types/blocks';
 
 export const getBlocks = async (
   id: string,
