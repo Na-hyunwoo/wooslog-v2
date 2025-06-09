@@ -1,9 +1,7 @@
+import type { Metadata } from 'next';
 import Image from 'next/image';
 
-import type { Metadata } from 'next';
-
-import { AboutPageSchema } from '@/components/AboutPageSchema';
-import { PageViewTracker } from '@/components/PageViewTracker';
+import { AboutPageSchema, PageViewTracker } from '@/components';
 import { BASE_URL } from '@/const';
 
 export const metadata: Metadata = {

@@ -1,8 +1,13 @@
+import type { Metadata } from 'next';
 import { Fragment } from 'react';
 
-import type { Metadata } from 'next';
-
-import { addExternalUrlToAllImageBlocks, getAllBlocks, getPage } from '@/apis';
+import {
+  addExternalUrlToAllImageBlocks,
+  addExternalUrlToAllPageProperties,
+  getAllBlocks,
+  getDatabasesResult,
+  getPage,
+} from '@/apis';
 import {
   BlockConverter,
   CustomImage,
@@ -11,9 +16,7 @@ import {
   BlogPostingSchema,
   PageViewTracker,
 } from '@/components';
-import { BASE_URL, DATABASE_ID, URL } from '@/const';
-import { getNotionHeaders } from '@/lib/notion';
-import { DatabaseResultType, PageInterface } from '@/types';
+import { BASE_URL } from '@/const';
 import { makeBlocksGroup } from '@/utils/makeBlocksGroup';
 
 export const generateMetadata = async ({
@@ -24,15 +27,10 @@ export const generateMetadata = async ({
   const { id: pageId } = await params;
 
   try {
-    const pageRes = await fetch(URL.PAGE(pageId), {
-      headers: getNotionHeaders(),
-      method: 'GET',
-    });
-
-    const pageData: PageInterface = await pageRes.json();
-    const title = pageData.properties.이름.title[0].plain_text;
-    const imageUrl = pageData.properties.이미지?.files?.[0]?.external?.url;
-    const description = pageData.properties.설명?.rich_text?.[0]?.plain_text || '';
+    const pageData = await getPage(pageId);
+    const title = pageData.properties.title.title[0].plain_text;
+    const imageUrl = pageData.properties.thumbnail.files[0]?.external?.url;
+    const description = pageData.properties.description.rich_text[0].plain_text;
 
     return {
       description,
@@ -65,11 +63,7 @@ export const dynamicParams = true;
 
 export const generateStaticParams = async () => {
   try {
-    const res = await fetch(URL.DATABASES(DATABASE_ID.POST), {
-      headers: getNotionHeaders(),
-      method: 'POST',
-    });
-    const { results = [] }: { results?: DatabaseResultType[] } = await res.json();
+    const results = await getDatabasesResult();
 
     return results.map((result) => ({
       id: result.id,
@@ -82,11 +76,12 @@ export const generateStaticParams = async () => {
 
 export default async function Detail({ params }: { params: Promise<{ id: string }> }) {
   const { id: pageId } = await params;
+  await addExternalUrlToAllPageProperties(pageId);
   await addExternalUrlToAllImageBlocks(pageId);
 
   const blocks = await getAllBlocks(pageId);
   const { created_time, last_edited_time, properties } = await getPage(pageId);
-  const description = properties.설명.rich_text[0].plain_text;
+  const description = properties.description.rich_text[0].plain_text;
 
   const isModify = created_time !== last_edited_time;
   const date = new Date(isModify ? last_edited_time : created_time);
@@ -104,20 +99,16 @@ export default async function Detail({ params }: { params: Promise<{ id: string 
         dateModified={last_edited_time}
         datePublished={created_time}
         description={description}
-        imageUrl={
-          properties.이미지.files[0]?.external?.url || properties.이미지.files[0]?.file?.url || ''
-        }
-        title={properties.이름.title[0].plain_text}
+        imageUrl={properties.thumbnail.files[0]?.external?.url || ''}
+        title={properties.title.title[0].plain_text}
         url={`${BASE_URL}/post/${pageId}`}
       />
       <PageViewTracker pageType="post" pageId={pageId} />
       <CustomImage
-        src={
-          properties.이미지.files[0]?.external?.url || properties.이미지.files[0]?.file?.url || ''
-        }
-        alt={properties.이름.title[0].plain_text}
+        src={properties.thumbnail.files[0]?.external?.url || ''}
+        alt={properties.title.title[0].plain_text}
       />
-      <H1 className="mb-4">{properties.이름.title[0].plain_text}</H1>
+      <H1 className="mb-4">{properties.title.title[0].plain_text}</H1>
       <P className="mb-8">{renderDate}</P>
       {makeBlocksGroup(blocks).map((block) => (
         <Fragment key={block.id}>{BlockConverter(block)}</Fragment>

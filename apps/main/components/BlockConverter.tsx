@@ -4,8 +4,7 @@ import SyntaxHighlighter from 'react-syntax-highlighter';
 import { a11yLight } from 'react-syntax-highlighter/dist/esm/styles/hljs';
 import { twMerge } from 'tailwind-merge';
 
-import { RichTextConverter } from './RichTextConverter';
-
+import { RichTextConverter } from '@/components/RichTextConverter';
 import type { ConvertedBlockInterface } from '@/types';
 
 export const BlockConverter = (block: ConvertedBlockInterface) => {

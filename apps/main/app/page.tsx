@@ -1,11 +1,9 @@
 import Image from 'next/image';
 import Link from 'next/link';
 
-import { addExternalUrlToAllPageProperties } from '@/apis';
+import { getDatabasesResult } from '@/apis';
 import { Card, HomePageSchema, PageViewTracker } from '@/components';
-import { BASE_URL, DATABASE_ID, ON_THE_FIRST_SCREEN, URL } from '@/const';
-import { getNotionHeaders } from '@/lib/notion';
-import { DatabaseResultType } from '@/types';
+import { BASE_URL, ON_THE_FIRST_SCREEN } from '@/const';
 
 export const revalidate = 3600;
 
@@ -23,12 +21,7 @@ export const metadata = {
 };
 
 export default async function Home() {
-  await addExternalUrlToAllPageProperties(DATABASE_ID.POST);
-  const res = await fetch(URL.DATABASES(DATABASE_ID.POST), {
-    headers: getNotionHeaders(),
-    method: 'POST',
-  });
-  const { results = [] }: { results?: DatabaseResultType[] } = await res.json();
+  const results = await getDatabasesResult();
 
   return (
     <main className="mx-auto max-w-screen-lg flex flex-col items-center">
@@ -61,19 +54,16 @@ export default async function Home() {
       </section>
       <ul className="grid grid-cols-1 lg:grid-cols-2 gap-y-12 justify-center justify-items-center py-10 w-full">
         {results.map((result, index) => {
-          const imageUrl =
-            result.properties['이미지'].files[0]?.external?.url ||
-            result.properties['이미지'].files[0]?.file?.url ||
-            '';
+          const imageUrl = result.properties.thumbnail.files[0]?.external?.url || '';
 
           return (
             <li key={result.id}>
               <Link href={`/post/${result.id}`}>
                 <Card
-                  alt={result.properties['설명'].rich_text[0].plain_text}
+                  alt={result.properties.description.rich_text[0].plain_text}
                   src={imageUrl}
-                  title={result.properties['이름'].title[0].plain_text}
-                  desc={result.properties['설명'].rich_text[0].plain_text}
+                  title={result.properties.title.title[0].plain_text}
+                  desc={result.properties.description.rich_text[0].plain_text}
                   createdTime={result.created_time}
                   lastEditedTime={result.last_edited_time}
                   priority={index < ON_THE_FIRST_SCREEN ? true : false}

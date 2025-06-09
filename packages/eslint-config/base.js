@@ -24,7 +24,6 @@ module.exports = {
           "parent",
           "sibling",
           "index",
-          "type",
         ],
         "newlines-between": "always",
         alphabetize: {
@@ -39,10 +38,5 @@ module.exports = {
     "import/no-unresolved": "off",
     "no-console": ["error", { allow: ["warn", "error"] }],
     "object-shorthand": ["error", "always"],
-    "sort-keys": [
-      "error",
-      "asc",
-      { caseSensitive: true, minKeys: 2, natural: false },
-    ],
   },
 };

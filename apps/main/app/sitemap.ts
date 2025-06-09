@@ -1,8 +1,7 @@
 import { MetadataRoute } from 'next';
 
-import { BASE_URL, DATABASE_ID, URL } from '@/const';
-import { getNotionHeaders } from '@/lib/notion';
-import { DatabaseResultType } from '@/types';
+import { getDatabasesResult } from '@/apis';
+import { BASE_URL } from '@/const';
 
 // 기본 라우트(홈, About 페이지)를 반환하는 함수
 const getBasicRoutes = (currentDate: string): MetadataRoute.Sitemap => {
@@ -28,18 +27,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   try {
     // Notion API에서 포스트 데이터 가져오기
-    const res = await fetch(URL.DATABASES(DATABASE_ID.POST), {
-      headers: getNotionHeaders(),
-      method: 'POST',
-    });
-
-    if (!res.ok) {
-      console.error(`Notion API 오류: ${res.status}`);
-      // API 오류 시 기본 페이지만 반환
-      return getBasicRoutes(currentDate);
-    }
-
-    const { results = [] }: { results?: DatabaseResultType[] } = await res.json();
+    const results = await getDatabasesResult();
 
     // 블로그 포스트 URL 생성
     const posts = results.map((post) => ({

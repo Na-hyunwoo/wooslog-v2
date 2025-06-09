@@ -1,3 +1,7 @@
+import { PageObjectResponse } from '@notionhq/client';
+
+import { DEPLOYMENT_STATUS } from '@/const';
+
 type File = {
   external?: {
     url: string;
@@ -99,6 +103,42 @@ export type DatabaseResultType = {
   };
 };
 
+export interface CustomPageObjectResponse extends Omit<PageObjectResponse, 'properties'> {
+  properties: {
+    created_time: {
+      created_time: string;
+    };
+    last_edited_time: {
+      last_edited_time: string;
+    };
+    deployment_status: {
+      rich_text: {
+        plain_text: (typeof DEPLOYMENT_STATUS)[keyof typeof DEPLOYMENT_STATUS];
+      }[];
+    };
+    thumbnail: {
+      files: Array<{
+        file?: { url: string };
+        external?: { url: string };
+        type: 'file' | 'external';
+      }>;
+    };
+    title: {
+      title: Array<{
+        plain_text: string;
+      }>;
+    };
+    description: {
+      rich_text: Array<{
+        plain_text: string;
+      }>;
+    };
+    distributable: {
+      checkbox: boolean;
+    };
+  };
+}
+
 export type BlockType =
   | 'bulleted_list_item'
   | 'paragraph'
@@ -142,11 +182,7 @@ export type ConvertedBlockInterface =
 export type PageInterface = {
   created_time: string;
   last_edited_time: string;
-  properties: {
-    이름: { title: Title[] };
-    이미지: { files: File[] };
-    설명: { rich_text: RichText[] };
-  };
+  properties: CustomPageObjectResponse['properties'];
 };
 
 export type UpdateBlockParams = {
@@ -156,6 +192,18 @@ export type UpdateBlockParams = {
       external: {
         url: string;
       };
+    };
+  };
+};
+
+export type UpdatePageParams = {
+  id: string;
+  body: {
+    thumbnail: {
+      files: Array<{
+        type: 'external';
+        external: { url: string };
+      }>;
     };
   };
 };
