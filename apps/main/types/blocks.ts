@@ -2,19 +2,6 @@ import { PageObjectResponse } from '@notionhq/client';
 
 import { DEPLOYMENT_STATUS } from '@/const';
 
-type File = {
-  external?: {
-    url: string;
-  };
-  file?: {
-    url: string;
-  };
-};
-
-type Title = {
-  plain_text: string;
-};
-
 export type RichText = {
   plain_text: string;
   annotations: {
@@ -90,19 +77,6 @@ export interface ImageBlock {
   };
 }
 
-export type DatabaseResultType = {
-  id: string;
-  created_time: string;
-  last_edited_time: string;
-  properties: {
-    이미지: { files: File[] };
-    이름: { title: Title[] };
-    설명: {
-      rich_text: RichText[];
-    };
-  };
-};
-
 export interface CustomPageObjectResponse extends Omit<PageObjectResponse, 'properties'> {
   properties: {
     created_time: {
@@ -139,17 +113,6 @@ export interface CustomPageObjectResponse extends Omit<PageObjectResponse, 'prop
   };
 }
 
-export type BlockType =
-  | 'bulleted_list_item'
-  | 'paragraph'
-  | 'heading_1'
-  | 'heading_2'
-  | 'heading_3'
-  | 'image'
-  | 'numbered_list_item'
-  | 'code'
-  | 'quote';
-
 export interface BlockStructureInterface {
   id: string;
   parent: {
@@ -178,12 +141,6 @@ export type ConvertedBlockInterface =
   | BlockInterface
   | BulletedListItemBlockGroup
   | NumberedListItemBlockGroup;
-
-export type PageInterface = {
-  created_time: string;
-  last_edited_time: string;
-  properties: CustomPageObjectResponse['properties'];
-};
 
 export type UpdateBlockParams = {
   id: string;
