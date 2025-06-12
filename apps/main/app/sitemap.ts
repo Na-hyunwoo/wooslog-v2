@@ -10,13 +10,13 @@ const getBasicRoutes = (currentDate: string): MetadataRoute.Sitemap => {
       changeFrequency: 'monthly' as const,
       lastModified: currentDate,
       priority: 1.0,
-      url: BASE_URL,
+      url: `${BASE_URL}/`,
     },
     {
       changeFrequency: 'yearly' as const,
       lastModified: currentDate,
       priority: 0.8,
-      url: `${BASE_URL}/about`,
+      url: `${BASE_URL}/about/`,
     },
   ];
 };
@@ -34,13 +34,13 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       changeFrequency: 'monthly' as const,
       lastModified: new Date(post.last_edited_time).toISOString(),
       priority: 0.7,
-      url: `${BASE_URL}/post/${post.id}`,
+      url: `${BASE_URL}/post/${post.id}/`,
     }));
 
     // 기본 페이지 URL
     const routes = getBasicRoutes(currentDate);
 
-    return [...routes, ...posts];
+    return [...routes, ...posts.slice(1)];
   } catch (error) {
     console.error('사이트맵 생성 중 오류 발생:', error);
     // 오류 발생 시 기본 페이지만 반환
