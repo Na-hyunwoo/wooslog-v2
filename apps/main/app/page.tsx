@@ -18,6 +18,9 @@ export const metadata = {
     type: 'website',
   },
   title: '홈',
+  alternates: {
+    canonical: `${BASE_URL}/`,
+  },
 };
 
 export default async function Home() {

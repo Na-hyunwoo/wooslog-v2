@@ -60,6 +60,7 @@ export default function RootLayout({
     return (
       <html lang="ko">
         <head>
+          <link rel="sitemap" type="application/xml" href={`${BASE_URL}/sitemap.xml`} />
           <link rel="preconnect" href="https://cdn.jsdelivr.net" crossOrigin="anonymous" />
           <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
           <link

@@ -47,6 +47,9 @@ export const generateMetadata = async ({
         images: imageUrl ? [imageUrl] : [],
         title,
       },
+      alternates: {
+        canonical: `${BASE_URL}/post/${pageId}/`,
+      },
     };
   } catch (error) {
     console.error('Failed to generate metadata:', error);

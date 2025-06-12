@@ -15,6 +15,9 @@ export const metadata: Metadata = {
     type: 'profile',
   },
   title: '소개',
+  alternates: {
+    canonical: `${BASE_URL}/about/`,
+  },
 };
 
 export default function About() {

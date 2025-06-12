@@ -8,6 +8,7 @@ export default function robots(): MetadataRoute.Robots {
     rules: {
       allow: '/',
       userAgent: '*',
+      disallow: ['/favicon.ico', '/_next/'],
     },
     sitemap: `${BASE_URL}/sitemap.xml`,
   };
