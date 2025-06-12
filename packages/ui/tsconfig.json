@@ -5,7 +5,11 @@
     "outDir": "./dist",
     "declaration": true,
     "declarationMap": true,
-    "declarationDir": "./dist"
+    "declarationDir": "./dist",
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["./src/*"]
+    }
   },
   "include": ["src/**/*.ts", "src/**/*.tsx"],
   "exclude": ["node_modules", "dist", "**/*.test.ts", "**/*.test.tsx"]
