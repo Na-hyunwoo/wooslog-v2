@@ -9,25 +9,37 @@ import '@wooslog/ui/styles.css';
 import './globals.css';
 
 export const metadata: Metadata = {
-  authors: [{ name: '나현우' }],
+  authors: [{ name: '나현우', url: `${BASE_URL}/` }],
   creator: '나현우',
-  description: '나현우의 기술적인 고민을 담은 블로그',
-  keywords: ['웹 개발', '프론트엔드', 'React', 'Next.js', '기술 블로그', '개발자'],
+  description:
+    '프론트엔드 개발자 나현우의 기술 블로그. React, Next.js, 웹 개발에 관한 실무 경험과 고민을 공유합니다.',
+  keywords: [
+    '프론트엔드 개발자',
+    '웹 개발',
+    'React',
+    'Next.js',
+    '기술 블로그',
+    '자바스크립트',
+    '타입스크립트',
+    '웹 최적화',
+    '개발자 포트폴리오',
+  ],
   openGraph: {
-    description: '나현우의 기술적인 고민을 담은 블로그',
     images: [
       {
         alt: '나현우 블로그',
         height: 80,
-        url: '/avatar.png',
+        url: `${BASE_URL}/avatar.png`,
         width: 80,
       },
     ],
     locale: 'ko_KR',
-    siteName: '나현우 블로그',
-    title: '나현우 블로그',
+    siteName: '나현우 기술 블로그',
+    title: '나현우 | 프론트엔드 개발자 블로그',
+    description:
+      '프론트엔드 개발자 나현우의 기술 블로그. React, Next.js, 웹 개발에 관한 실무 경험과 고민을 공유합니다.',
     type: 'website',
-    url: BASE_URL,
+    url: `${BASE_URL}/`,
   },
   other: {
     'linkedin:card': 'summary_large_image',
@@ -37,17 +49,25 @@ export const metadata: Metadata = {
     'linkedin:title': '나현우 블로그',
   },
   publisher: '나현우',
-  robots: 'index, follow',
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+    },
+  },
   title: {
-    default: '나현우 블로그',
+    default: '나현우 | 프론트엔드 개발자 기술 블로그',
     template: '%s | 나현우 블로그',
   },
   twitter: {
     card: 'summary_large_image',
     creator: '@devna',
-    description: '나현우의 기술적인 고민을 담은 블로그',
     images: [`${BASE_URL}/avatar.png`],
-    title: '나현우 블로그',
+    title: '나현우 | 프론트엔드 개발자 블로그',
+    description:
+      '프론트엔드 개발자 나현우의 기술 블로그. React, Next.js, 웹 개발에 관한 실무 경험과 고민을 공유합니다.',
   },
 };
 

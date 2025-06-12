@@ -39,6 +39,7 @@ export const generateMetadata = async ({
         images: imageUrl ? [imageUrl] : [],
         title,
         type: 'article',
+        authors: ['나현우'],
       },
       title,
       twitter: {

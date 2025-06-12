@@ -36,11 +36,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       priority: 0.7,
       url: `${BASE_URL}/post/${post.id}/`,
     }));
+    const recentPosts = posts.slice(0, 1);
 
     // 기본 페이지 URL
     const routes = getBasicRoutes(currentDate);
 
-    return [...routes, ...posts.slice(1)];
+    return [...routes, ...recentPosts];
   } catch (error) {
     console.error('사이트맵 생성 중 오류 발생:', error);
     // 오류 발생 시 기본 페이지만 반환
