@@ -110,6 +110,20 @@ export interface CustomPageObjectResponse extends Omit<PageObjectResponse, 'prop
     distributable: {
       checkbox: boolean;
     };
+    prevPostId: {
+      rich_text:
+        | Array<{
+            plain_text: string;
+          }>
+        | [];
+    };
+    nextPostId: {
+      rich_text:
+        | Array<{
+            plain_text: string;
+          }>
+        | [];
+    };
   };
 }
 

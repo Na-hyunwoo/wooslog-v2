@@ -160,6 +160,8 @@ export const getPage = async (id: string) => {
         description: { rich_text: [] },
         title: { title: [] },
         thumbnail: { files: [] },
+        prevPostId: { rich_text: [] },
+        nextPostId: { rich_text: [] },
       },
     };
   }

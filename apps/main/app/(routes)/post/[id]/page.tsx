@@ -15,6 +15,7 @@ import {
   P,
   BlogPostingSchema,
   PageViewTracker,
+  PostNavigation,
 } from '@/components';
 import { BASE_URL } from '@/const';
 import { makeBlocksGroup } from '@/utils/makeBlocksGroup';
@@ -85,6 +86,10 @@ export default async function Detail({ params }: { params: Promise<{ id: string 
 
   const blocks = await getAllBlocks(pageId);
   const { created_time, last_edited_time, properties } = await getPage(pageId);
+  const prevPostId = properties.prevPostId.rich_text[0]?.plain_text;
+  const nextPostId = properties.nextPostId.rich_text[0]?.plain_text;
+  const { properties: prevPostProperties } = prevPostId ? await getPage(prevPostId) : {};
+  const { properties: nextPostProperties } = nextPostId ? await getPage(nextPostId) : {};
   const description = properties.description.rich_text[0].plain_text;
 
   const isModify = created_time !== last_edited_time;
@@ -117,6 +122,13 @@ export default async function Detail({ params }: { params: Promise<{ id: string 
       {makeBlocksGroup(blocks).map((block) => (
         <Fragment key={block.id}>{BlockConverter(block)}</Fragment>
       ))}
+
+      <PostNavigation
+        prevPostId={prevPostId}
+        nextPostId={nextPostId}
+        prevPostTitle={prevPostProperties?.title.title[0]?.plain_text}
+        nextPostTitle={nextPostProperties?.title.title[0]?.plain_text}
+      />
     </main>
   );
 }
