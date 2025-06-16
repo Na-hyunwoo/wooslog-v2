@@ -18,7 +18,7 @@ import {
   PostNavigation,
 } from '@/components';
 import { BASE_URL } from '@/const';
-import { makeBlocksGroup } from '@/utils/makeBlocksGroup';
+import { formatPostDate, makeBlocksGroup } from '@/utils';
 
 export const generateMetadata = async ({
   params,
@@ -92,14 +92,7 @@ export default async function Detail({ params }: { params: Promise<{ id: string 
   const { properties: nextPostProperties } = nextPostId ? await getPage(nextPostId) : {};
   const description = properties.description.rich_text[0].plain_text;
 
-  const isModify = created_time !== last_edited_time;
-  const date = new Date(isModify ? last_edited_time : created_time);
-  const formattedDate = date.toLocaleDateString('ko-KR', {
-    day: 'numeric',
-    month: 'long',
-    year: 'numeric',
-  });
-  const renderDate = isModify ? `${formattedDate} (수정됨)` : formattedDate;
+  const renderDate = formatPostDate(created_time, last_edited_time);
 
   return (
     <main className="mx-auto max-w-2xl py-16 px-4 break-all">
