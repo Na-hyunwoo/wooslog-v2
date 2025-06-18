@@ -3,6 +3,8 @@
 import Image, { ImageProps } from 'next/image';
 import { useState } from 'react';
 
+import { formatPostDate } from '@/utils';
+
 type CardProps = {
   title: string;
   desc: string;
@@ -20,14 +22,8 @@ export const Card = ({
   ...props
 }: CardProps) => {
   const [isLoaded, setIsLoaded] = useState(false);
-  const isModify = createdTime !== lastEditedTime;
-  const date = new Date(isModify ? lastEditedTime : createdTime);
-  const formattedDate = date.toLocaleDateString('ko-KR', {
-    day: 'numeric',
-    month: 'long',
-    year: 'numeric',
-  });
-  const renderDate = isModify ? `${formattedDate} (수정됨)` : formattedDate;
+  const renderDate = formatPostDate(createdTime, lastEditedTime);
+
   return (
     <div className="block transform transition-transform duration-300 lg:hover:-translate-y-2 shadow-[0_15px_30px_0_rgba(0,0,0,0.05)] overflow-hidden rounded-2xl w-[360px] md:w-[480px]">
       <div className="relative w-full aspect-[360/202] md:aspect-[480/269]">
