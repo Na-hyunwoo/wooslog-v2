@@ -67,12 +67,20 @@ export interface CodeBlock {
   code: { rich_text: RichText[]; language: string };
 }
 
-export interface ImageBlock {
+export interface BaseImageBlock {
   type: 'image';
   image: {
-    type: 'file' | 'external';
-    file?: { url: string };
-    external?: { url: string };
+    type: 'file';
+    file: { url: string };
+    caption?: { plain_text: string }[];
+  };
+}
+
+export interface ExternalImageBlock {
+  type: 'image';
+  image: {
+    type: 'external';
+    external: { url: string };
     caption?: { plain_text: string }[];
   };
 }
@@ -148,7 +156,8 @@ export type BlockInterface = BlockStructureInterface &
     | NumberedListItemBlock
     | QuoteBlock
     | CodeBlock
-    | ImageBlock
+    | BaseImageBlock
+    | ExternalImageBlock
   );
 
 export type ConvertedBlockInterface =
