@@ -1,0 +1,23 @@
+name: Revalidate Cache
+
+on:
+  workflow_dispatch:
+    # 수동으로 워크플로우를 트리거할 수 있게 함
+    inputs:
+      site_url:
+        description: "Blog URL"
+        required: true
+        default: "https://devna.xyz"
+
+jobs:
+  revalidate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Revalidate Next.js Cache
+        run: |
+          curl -X POST ${{ inputs.site_url }}/api/revalidate \
+            -H "Content-Type: application/json" \
+            -d '{"revalidateKey": "${{ secrets.REVALIDATION_KEY }}"}'
+      - name: Check Response
+        run: |
+          echo "캐시 무효화 요청이 완료되었습니다."
