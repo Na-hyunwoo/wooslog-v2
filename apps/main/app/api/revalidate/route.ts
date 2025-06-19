@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import { revalidatePath } from 'next/cache';
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
@@ -9,6 +10,8 @@ export const POST = async (request: NextRequest) => {
 
     // 시크릿 키 검증 (보안을 위해 필수)
     if (revalidationKey !== process.env.REVALIDATION_KEY) {
+      console.log('revalidationKey', revalidationKey);
+      console.log('process.env.REVALIDATION_KEY', process.env.REVALIDATION_KEY);
       return NextResponse.json({ message: '유효하지 않은 토큰' }, { status: 401 });
     }
 
