@@ -123,7 +123,3 @@ jobs:
 
             # 미사용 이미지 정리
             docker image prune -af
-
-      - name: Check .next/server/app/api/revalidate/route.js in built image
-        run: |
-          docker run --rm ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest ls /app/apps/main/.next/server/app/api/revalidate/
