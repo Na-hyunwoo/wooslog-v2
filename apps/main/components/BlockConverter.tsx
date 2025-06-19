@@ -80,7 +80,7 @@ export const BlockConverter = (block: ConvertedBlockInterface) => {
     case 'image':
       return (
         <CustomImage
-          src={block.image?.external?.url ?? block.image.file?.url ?? ''}
+          src={'external' in block.image ? block.image.external.url : block.image.file.url}
           alt={block.image.caption?.map((t) => t.plain_text).join('') ?? ''}
           caption={block.image.caption?.map((t) => t.plain_text).join('') ?? ''}
         />
