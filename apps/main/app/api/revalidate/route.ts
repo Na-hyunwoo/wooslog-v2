@@ -12,9 +12,8 @@ export const POST = async (request: NextRequest) => {
       return NextResponse.json({ message: '유효하지 않은 토큰' }, { status: 401 });
     }
 
-    // 홈페이지 및 모든 포스트 페이지 캐시 무효화
-    revalidatePath('/');
-    revalidatePath('/post', 'layout'); // 모든 포스트 페이지 캐시 무효화
+    // 모든 페이지 캐시 무효화
+    revalidatePath('/', 'layout');
 
     return NextResponse.json({
       revalidated: true,
