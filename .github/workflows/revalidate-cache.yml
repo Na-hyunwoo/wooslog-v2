@@ -14,10 +14,30 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Revalidate Next.js Cache
+        id: revalidate
         run: |
-          curl -X POST ${{ inputs.site_url }}/api/revalidate \
+          echo "요청 URL: ${{ inputs.site_url }}/api/revalidate"
+          RESPONSE=$(curl -s -w "\n%{http_code}" -X POST ${{ inputs.site_url }}/api/revalidate \
             -H "Content-Type: application/json" \
-            -d '{"revalidateKey": "${{ secrets.REVALIDATION_KEY }}"}'
-      - name: Check Response
+            -d '{"revalidateKey": "${{ secrets.REVALIDATION_KEY }}"}')
+          HTTP_STATUS=$(echo "$RESPONSE" | tail -n1)
+          BODY=$(echo "$RESPONSE" | sed '$ d')
+          echo "응답 상태 코드: $HTTP_STATUS"
+          echo "응답 내용: $BODY"
+          echo "response_body=$BODY" >> $GITHUB_OUTPUT
+          echo "status_code=$HTTP_STATUS" >> $GITHUB_OUTPUT
+          if [ "$HTTP_STATUS" -ge 200 ] && [ "$HTTP_STATUS" -lt 300 ]; then
+            echo "✅ 캐시 무효화 요청이 성공적으로 완료되었습니다."
+          else
+            echo "❌ 캐시 무효화 요청이 실패했습니다."
+            exit 1
+          fi
+
+      - name: 결과 요약
         run: |
-          echo "캐시 무효화 요청이 완료되었습니다."
+          echo "📝 캐시 무효화 결과 요약"
+          echo "----------------------------"
+          echo "상태 코드: ${{ steps.revalidate.outputs.status_code }}"
+          echo "응답 내용: ${{ steps.revalidate.outputs.response_body }}"
+          echo "요청 시간: $(date)"
+          echo "----------------------------"
