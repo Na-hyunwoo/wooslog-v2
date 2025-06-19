@@ -45,7 +45,7 @@ class Cloudinary {
     }
   }
 
-  async converToCloudinaryImg({ imgUrl, title }: { imgUrl: string; title: string }) {
+  async convertToCloudinaryImg({ imgUrl, title }: { imgUrl: string; title: string }) {
     try {
       const folder = process.env.NEXT_PUBLIC_CLOUDINARY_FOLDER;
 

@@ -64,7 +64,7 @@ export const addExternalUrlToAllImageBlocks = async (id: string) => {
     }
 
     try {
-      const convertedUrl = await cloudinaryApi.converToCloudinaryImg({
+      const convertedUrl = await cloudinaryApi.convertToCloudinaryImg({
         imgUrl: url,
         title: `post_${id}_${index}`,
       });
@@ -124,7 +124,7 @@ export const addExternalUrlToAllPageProperties = async (id: string) => {
   }
 
   try {
-    const convertedUrl = await cloudinaryApi.converToCloudinaryImg({
+    const convertedUrl = await cloudinaryApi.convertToCloudinaryImg({
       imgUrl: thumbnail[0].file.url,
       title: `thumbnail_${id}`,
     });
