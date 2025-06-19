@@ -72,6 +72,7 @@ jobs:
             NEXT_PUBLIC_SUPABASE_ANON_KEY=${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
             CLOUDINARY_URL=${{ secrets.CLOUDINARY_URL }}
             NEXT_PUBLIC_CLOUDINARY_FOLDER=${{ secrets.NEXT_PUBLIC_CLOUDINARY_FOLDER }}
+            REVALIDATION_KEY=${{ secrets.REVALIDATION_KEY }}
 
       - name: Copy configuration files to server
         uses: appleboy/scp-action@master
@@ -109,6 +110,7 @@ jobs:
             NEXT_PUBLIC_SUPABASE_ANON_KEY=${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
             CLOUDINARY_URL=${{ secrets.CLOUDINARY_URL }}
             NEXT_PUBLIC_CLOUDINARY_FOLDER=${{ secrets.NEXT_PUBLIC_CLOUDINARY_FOLDER }}
+            REVALIDATION_KEY=${{ secrets.REVALIDATION_KEY }}
             EOL
 
             # 인증서 자동 갱신 cron 작업 설정
