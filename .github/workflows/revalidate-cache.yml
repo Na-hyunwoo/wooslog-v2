@@ -19,7 +19,7 @@ jobs:
           echo "요청 URL: ${{ inputs.site_url }}/api/revalidate"
           RESPONSE=$(curl -s -w "\n%{http_code}" -X POST ${{ inputs.site_url }}/api/revalidate \
             -H "Content-Type: application/json" \
-            -d '{"revalidateKey": "${{ secrets.REVALIDATION_KEY }}"}')
+            -d '{"revalidationKey": "${{ secrets.REVALIDATION_KEY }}"}')
           HTTP_STATUS=$(echo "$RESPONSE" | tail -n1)
           BODY=$(echo "$RESPONSE" | sed '$ d')
           echo "응답 상태 코드: $HTTP_STATUS"
