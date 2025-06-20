@@ -16,6 +16,7 @@ import {
   BlogPostingSchema,
   PageViewTracker,
   PostNavigation,
+  TableOfContents,
 } from '@/components';
 import { BASE_URL } from '@/const';
 import { formatPostDate, makeBlocksGroup } from '@/utils';
@@ -83,6 +84,7 @@ export default async function Detail({ params }: { params: Promise<{ id: string 
   await addExternalUrlToAllImageBlocks(pageId);
 
   const blocks = await getAllBlocks(pageId);
+  const blocksGroup = makeBlocksGroup(blocks);
   const { created_time, last_edited_time, properties } = await getPage(pageId);
   const prevPostId = properties.prevPostId.rich_text[0]?.plain_text;
   const nextPostId = properties.nextPostId.rich_text[0]?.plain_text;
@@ -110,7 +112,8 @@ export default async function Detail({ params }: { params: Promise<{ id: string 
       />
       <H1 className="mb-4">{properties.title.title[0].plain_text}</H1>
       <P className="mb-8">{renderDate}</P>
-      {makeBlocksGroup(blocks).map((block) => (
+      <TableOfContents blocks={blocksGroup} />
+      {blocksGroup.map((block) => (
         <Fragment key={block.id}>{BlockConverter(block)}</Fragment>
       ))}
 

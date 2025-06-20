@@ -9,3 +9,4 @@ export * from './PageViewTracker';
 export * from './AboutPageSchema';
 export * from './HomePageSchema';
 export * from './PostNavigation';
+export * from './TableOfContents';

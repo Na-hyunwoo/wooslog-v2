@@ -78,7 +78,7 @@ export default function RootLayout({
 }>) {
   {
     return (
-      <html lang="ko">
+      <html lang="ko" className="scroll-smooth">
         <head>
           <link rel="sitemap" type="application/xml" href={`${BASE_URL}/sitemap.xml`} />
           <link rel="preconnect" href="https://cdn.jsdelivr.net" crossOrigin="anonymous" />
