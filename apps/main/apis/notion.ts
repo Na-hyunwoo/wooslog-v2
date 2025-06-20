@@ -1,4 +1,5 @@
 import { GetBlockResponse, ListBlockChildrenResponse } from '@notionhq/client';
+import { unstable_cache } from 'next/cache';
 
 import { DATABASE_ID } from '@/const';
 import { cloudinaryApi } from '@/lib/cloudinary';
@@ -6,21 +7,27 @@ import { notion } from '@/lib/notion';
 import type { CustomPageObjectResponse, UpdateBlockParams, UpdatePageParams } from '@/types/blocks';
 
 const getBlocks = async (id: string, nextCursor: string | null = null) => {
-  try {
-    const res: ListBlockChildrenResponse = await notion.blocks.children.list({
-      block_id: id,
-      ...(nextCursor && { start_cursor: nextCursor }),
-    });
+  return unstable_cache(
+    async () => {
+      try {
+        const res: ListBlockChildrenResponse = await notion.blocks.children.list({
+          block_id: id,
+          ...(nextCursor && { start_cursor: nextCursor }),
+        });
 
-    return res;
-  } catch (error) {
-    console.error(error);
-    return {
-      has_more: false,
-      next_cursor: '',
-      results: [],
-    };
-  }
+        return res;
+      } catch (error) {
+        console.error(error);
+        return {
+          has_more: false,
+          next_cursor: '',
+          results: [],
+        };
+      }
+    },
+    ['blocks', id, nextCursor ?? ''],
+    { tags: ['blocks', id, nextCursor ?? ''], revalidate: 3600 }
+  )();
 };
 
 export const getAllBlocks = async (id: string) => {
@@ -148,49 +155,61 @@ export const addExternalUrlToAllPageProperties = async (id: string) => {
 };
 
 export const getPage = async (id: string) => {
-  try {
-    const res = await notion.pages.retrieve({ page_id: id });
-    return res as CustomPageObjectResponse;
-  } catch (error) {
-    console.error(error);
-    return {
-      created_time: '',
-      last_edited_time: '',
-      properties: {
-        description: { rich_text: [] },
-        title: { title: [] },
-        thumbnail: { files: [] },
-        prevPostId: { rich_text: [] },
-        nextPostId: { rich_text: [] },
-      },
-    };
-  }
+  return unstable_cache(
+    async () => {
+      try {
+        const res = await notion.pages.retrieve({ page_id: id });
+        return res as CustomPageObjectResponse;
+      } catch (error) {
+        console.error(error);
+        return {
+          created_time: '',
+          last_edited_time: '',
+          properties: {
+            description: { rich_text: [] },
+            title: { title: [] },
+            thumbnail: { files: [] },
+            prevPostId: { rich_text: [] },
+            nextPostId: { rich_text: [] },
+          },
+        };
+      }
+    },
+    ['page', id],
+    { tags: ['page', id], revalidate: 3600 }
+  )();
 };
 
 export const getDatabasesResult = async () => {
-  try {
-    const res = await notion.databases.query({
-      database_id: DATABASE_ID.POST_V2,
-      filter: {
-        and: [
-          {
-            property: 'distributable',
-            checkbox: {
-              equals: true,
-            },
+  return unstable_cache(
+    async () => {
+      try {
+        const res = await notion.databases.query({
+          database_id: DATABASE_ID.POST,
+          filter: {
+            and: [
+              {
+                property: 'distributable',
+                checkbox: {
+                  equals: true,
+                },
+              },
+            ],
           },
-        ],
-      },
-      sorts: [
-        {
-          property: 'created_time',
-          direction: 'descending',
-        },
-      ],
-    });
-    return (res.results ?? []) as CustomPageObjectResponse[];
-  } catch (error) {
-    console.error('Failed to fetch database results:', error);
-    return [] as CustomPageObjectResponse[];
-  }
+          sorts: [
+            {
+              property: 'created_time',
+              direction: 'descending',
+            },
+          ],
+        });
+        return (res.results ?? []) as CustomPageObjectResponse[];
+      } catch (error) {
+        console.error('Failed to fetch database results:', error);
+        return [] as CustomPageObjectResponse[];
+      }
+    },
+    ['database', DATABASE_ID.POST],
+    { tags: ['database', DATABASE_ID.POST], revalidate: 3600 }
+  )();
 };

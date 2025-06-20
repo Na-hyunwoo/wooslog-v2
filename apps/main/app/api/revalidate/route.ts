@@ -1,4 +1,4 @@
-import { revalidatePath } from 'next/cache';
+import { revalidateTag } from 'next/cache';
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 
@@ -12,13 +12,14 @@ export const POST = async (request: NextRequest) => {
       return NextResponse.json({ message: '유효하지 않은 토큰' }, { status: 401 });
     }
 
-    // 홈 화면 및 포스트 페이지 캐시 무효화
-    revalidatePath('/');
-    revalidatePath('/post/[id]', 'page');
+    // 홈과 모든 포스트 페이지의 캐시 무효화
+    revalidateTag('page');
+    revalidateTag('blocks');
+    revalidateTag('database');
 
     return NextResponse.json({
       revalidated: true,
-      message: '홈페이지와 모든 포스트 페이지의 캐시가 성공적으로 무효화되었습니다',
+      message: '홈과 모든 포스트 페이지의 캐시가 성공적으로 무효화되었습니다',
     });
   } catch (error) {
     return NextResponse.json(

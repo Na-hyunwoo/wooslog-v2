@@ -62,8 +62,6 @@ export const generateMetadata = async ({
   }
 };
 
-export const revalidate = 3600;
-
 export const dynamicParams = true;
 
 export const generateStaticParams = async () => {

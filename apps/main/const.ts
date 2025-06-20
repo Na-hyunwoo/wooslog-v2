@@ -17,8 +17,7 @@ export const URL = {
 
 export const DATABASE_ID = {
   ARCHIVE: '1caec025bcc180798009d8150ebfa3ec',
-  POST: '1bcec025bcc18029b02ff6f3cd44195d',
-  POST_V2: '20dec025bcc1808d808dde52e9387fdf',
+  POST: '20dec025bcc1808d808dde52e9387fdf',
 } as const;
 
 export const ON_THE_FIRST_SCREEN = 6;
