@@ -9,7 +9,6 @@ on:
 env:
   REGISTRY: ghcr.io
   IMAGE_NAME: na-hyunwoo/wooslog-v2/main
-  IMAGE_TAG: ${{ github.sha }}
 
 jobs:
   build-and-deploy:
@@ -28,7 +27,7 @@ jobs:
           version: 8
 
       - name: Setup Node.js
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           node-version: 20
           cache: "pnpm"
@@ -54,7 +53,6 @@ jobs:
           tags: |
             type=sha,format=long
             type=ref,event=branch
-            ${{ env.IMAGE_TAG }}
             latest
 
       - name: Build and push Docker image
@@ -93,20 +91,12 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
             # 최신 이미지 가져오기
-            docker pull ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }}
-
-            # 필요한 디렉토리 생성
-            mkdir -p ~/nginx/conf.d ~/certbot/conf ~/certbot/www ~/logs
-
-            # 설정 파일 복사
-            cp ~/nginx/nginx.conf ~/nginx/
-            cp ~/nginx/app.conf ~/nginx/conf.d/
+            docker pull ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
 
             # 환경 변수 파일 생성
-            cat > ~/.env << EOL
+            cat > ~/docker/.env << EOL
             REGISTRY=${{ env.REGISTRY }}
             IMAGE_NAME=${{ env.IMAGE_NAME }}
-            IMAGE_TAG=${{ env.IMAGE_TAG }}
             NOTION_API_KEY=${{ secrets.NOTION_API_KEY }}
             NEXT_PUBLIC_SUPABASE_URL=${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
             NEXT_PUBLIC_SUPABASE_ANON_KEY=${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
@@ -119,9 +109,9 @@ jobs:
             (crontab -l 2>/dev/null | grep -v "certbot renew" || true; echo "0 3 * * * docker run --rm --name certbot-renew -v ~/certbot/conf:/etc/letsencrypt -v ~/certbot/www:/var/www/certbot certbot/certbot renew --webroot -w /var/www/certbot && docker exec nginx-proxy nginx -s reload") | crontab -
 
             # 배포 실행
-            docker compose down -v
+            cd ~/docker
+            docker compose down 
             docker compose up -d
-
 
             # 미사용 이미지 정리
             docker image prune -af

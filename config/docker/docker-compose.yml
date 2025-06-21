@@ -2,7 +2,7 @@ version: "3"
 
 services:
   main-app:
-    image: ${REGISTRY}/${IMAGE_NAME}:${IMAGE_TAG}
+    image: ${REGISTRY}/${IMAGE_NAME}:latest
     restart: always
     ports:
       - "3000:3000"
