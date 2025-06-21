@@ -84,7 +84,7 @@ export default function About() {
           더 궁금한 점이 있으시면 편하게{' '}
           <a
             href="mailto:contactharry97@gmail.com"
-            className="inline-block font-bold text-[#3182f6] underline transition-transform duration-200 lg:hover:scale-105"
+            className="inline-block font-bold text-[#3182f6] underline"
           >
             연락
           </a>
