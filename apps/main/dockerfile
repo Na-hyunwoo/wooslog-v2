@@ -14,21 +14,13 @@ ENV NEXT_PUBLIC_SUPABASE_ANON_KEY=${NEXT_PUBLIC_SUPABASE_ANON_KEY}
 ENV CLOUDINARY_URL=${CLOUDINARY_URL}
 ENV NEXT_PUBLIC_CLOUDINARY_FOLDER=${NEXT_PUBLIC_CLOUDINARY_FOLDER}
 ENV REVALIDATION_KEY=${REVALIDATION_KEY}
-COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
 
-COPY packages/tsconfig/package.json ./packages/tsconfig/
-COPY packages/eslint-config/package.json ./packages/eslint-config/
-COPY packages/prettier-config/package.json ./packages/prettier-config/
-COPY packages/tailwind-config/package.json ./packages/tailwind-config/
-COPY packages/ui/package.json ./packages/ui/
-COPY apps/main/package.json ./apps/main/
+COPY package.json pnpm-lock.yaml pnpm-workspace.yaml turbo.json ./
+COPY apps/main ./apps/main
+COPY packages ./packages
 
 RUN npm install -g pnpm 
 RUN pnpm install --frozen-lockfile
-
-COPY apps/main ./apps/main
-COPY packages ./packages
-COPY turbo.json ./turbo.json
 
 RUN pnpm turbo run build
 
