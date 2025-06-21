@@ -119,9 +119,8 @@ jobs:
             (crontab -l 2>/dev/null | grep -v "certbot renew" || true; echo "0 3 * * * docker run --rm --name certbot-renew -v ~/certbot/conf:/etc/letsencrypt -v ~/certbot/www:/var/www/certbot certbot/certbot renew --webroot -w /var/www/certbot && docker exec nginx-proxy nginx -s reload") | crontab -
 
             # 배포 실행
-            cd ~
-            docker-compose --env-file ~/.env -f docker/docker-compose.yml down -v
-            docker-compose --env-file ~/.env -f docker/docker-compose.yml up -d
+            docker compose down -v
+            docker compose up -d
 
 
             # 미사용 이미지 정리
