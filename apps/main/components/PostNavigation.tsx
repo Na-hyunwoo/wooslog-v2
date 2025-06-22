@@ -19,7 +19,7 @@ export const PostNavigation = ({
   }
 
   return (
-    <div className="flex justify-between mt-16 gap-1">
+    <div className={`flex mt-16 gap-1 ${prevPostId ? 'justify-between' : 'justify-end'}`}>
       {prevPostId && (
         <Button asChild variant="secondary" className="lg:h-16 h-10 w-1/2 p-4">
           <Link href={`/post/${prevPostId}`} className="flex flex-col">
