@@ -223,7 +223,7 @@ export const CustomImage = ({
           src={src}
           alt={alt}
           fill
-          className={twMerge('object-contain', className)}
+          className={twMerge('object-cover', className)}
           sizes="672px"
         />
       </div>
