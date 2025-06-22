@@ -85,20 +85,19 @@ export default async function Detail({ params }: { params: Promise<{ id: string 
 
   const blocks = await getAllBlocks(pageId);
   const blocksGroup = makeBlocksGroup(blocks);
-  const { created_time, last_edited_time, properties } = await getPage(pageId);
+  const { created_time, properties } = await getPage(pageId);
   const prevPostId = properties.prevPostId.rich_text[0]?.plain_text;
   const nextPostId = properties.nextPostId.rich_text[0]?.plain_text;
   const { properties: prevPostProperties } = prevPostId ? await getPage(prevPostId) : {};
   const { properties: nextPostProperties } = nextPostId ? await getPage(nextPostId) : {};
   const description = properties.description.rich_text[0].plain_text;
 
-  const renderDate = formatPostDate(created_time, last_edited_time);
+  const renderDate = formatPostDate(created_time);
 
   return (
     <main className="mx-auto max-w-2xl py-16 px-4 break-all">
       <BlogPostingSchema
         authorName="나현우"
-        dateModified={last_edited_time}
         datePublished={created_time}
         description={description}
         imageUrl={properties.thumbnail.files[0]?.external?.url || ''}

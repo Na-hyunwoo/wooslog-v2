@@ -9,20 +9,11 @@ type CardProps = {
   title: string;
   desc: string;
   createdTime: string;
-  lastEditedTime: string;
 } & ImageProps;
 
-export const Card = ({
-  title,
-  desc,
-  alt,
-  src,
-  createdTime,
-  lastEditedTime,
-  ...props
-}: CardProps) => {
+export const Card = ({ title, desc, alt, src, createdTime, ...props }: CardProps) => {
   const [isLoaded, setIsLoaded] = useState(false);
-  const renderDate = formatPostDate(createdTime, lastEditedTime);
+  const renderDate = formatPostDate(createdTime);
 
   return (
     <div className="block transform transition-transform duration-300 lg:hover:-translate-y-2 shadow-[0_15px_30px_0_rgba(0,0,0,0.05)] overflow-hidden rounded-2xl w-[360px] md:w-[480px]">

@@ -5,7 +5,6 @@ import { BASE_URL } from '@/const';
 interface BlogPostingSchemaProps {
   authorName: string;
   category?: string;
-  dateModified: string;
   datePublished: string;
   description: string;
   imageUrl: string;
@@ -15,7 +14,6 @@ interface BlogPostingSchemaProps {
 
 export const BlogPostingSchema = ({
   authorName,
-  dateModified,
   datePublished,
   description,
   imageUrl,
@@ -32,7 +30,6 @@ export const BlogPostingSchema = ({
     },
     citation: `${authorName}. (${new Date(datePublished).getFullYear()}). ${title}. 나현우 블로그. ${url}`,
     copyrightYear: new Date(datePublished).getFullYear(),
-    dateModified,
     datePublished,
     description,
     headline: title,

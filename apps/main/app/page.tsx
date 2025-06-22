@@ -66,7 +66,6 @@ export default async function Home() {
                   title={result.properties.title.title[0].plain_text}
                   desc={result.properties.description.rich_text[0].plain_text}
                   createdTime={result.created_time}
-                  lastEditedTime={result.last_edited_time}
                   priority={index < ON_THE_FIRST_SCREEN ? true : false}
                 />
               </Link>
