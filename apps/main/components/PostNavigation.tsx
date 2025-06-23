@@ -26,7 +26,7 @@ export const PostNavigation = ({
             <p className="flex self-start items-center gap-1 text-xs">
               <ChevronLeftIcon className="size-4" /> 이전 포스트
             </p>
-            <p className="text-md text-white font-bold lg:block hidden">{prevPostTitle}</p>
+            <p className="text-md text-[#171717] font-bold lg:block hidden">{prevPostTitle}</p>
           </Link>
         </Button>
       )}
@@ -36,7 +36,7 @@ export const PostNavigation = ({
             <p className="flex self-end items-center gap-1 text-xs">
               다음 포스트 <ChevronRightIcon className="size-4" />
             </p>
-            <p className="text-md text-white font-bold lg:block hidden">{nextPostTitle}</p>
+            <p className="text-md text-[#171717] font-bold lg:block hidden">{nextPostTitle}</p>
           </Link>
         </Button>
       )}
