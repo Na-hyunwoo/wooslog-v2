@@ -1,3 +1,3 @@
 export * from './Footer';
-export * from './Tab';
+export * from './tab';
 export * from './Button';

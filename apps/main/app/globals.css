@@ -9,9 +9,8 @@ html {
 
 body {
   overscroll-behavior: none;
-}
-
-body {
-  background: white;
-  color: black;
+  background: #030712;
+  color: white;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
