@@ -22,7 +22,7 @@ export const RichTextConverter = (richText: RichText) => {
     content = <u>{content}</u>;
   }
   if (code) {
-    content = <span className="bg-[#FCF5CF] px-1 font-medium">{content}</span>;
+    content = <span className="bg-blue-600/50 px-1 font-medium">{content}</span>;
   }
   if (color) {
     content = <span style={{ color }}>{content}</span>;
@@ -30,7 +30,7 @@ export const RichTextConverter = (richText: RichText) => {
   if (href) {
     content = (
       <a
-        className="text-[#6B7684] underline lg:hover:text-black"
+        className="underline hover:text-blue-500"
         href={href}
         target="_blank"
         rel="noopener noreferrer"

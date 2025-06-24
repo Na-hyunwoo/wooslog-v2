@@ -1,6 +1,6 @@
 import { Fragment } from 'react';
 import SyntaxHighlighter from 'react-syntax-highlighter';
-import { a11yLight } from 'react-syntax-highlighter/dist/esm/styles/hljs';
+import { anOldHope } from 'react-syntax-highlighter/dist/esm/styles/hljs';
 
 import { Blockquote } from './BlockQuote';
 import { CustomImage } from './CustomImage';
@@ -68,16 +68,16 @@ export const BlockConverter = (block: ConvertedBlockInterface) => {
           <SyntaxHighlighter
             language={block.code.language}
             showLineNumbers
-            style={a11yLight}
+            style={anOldHope}
             customStyle={{
               backgroundColor: 'white',
-              border: '1px solid #efefef',
+              border: '1px solid #545454',
               borderRadius: '8px',
               fontSize: '13px',
               padding: '10px',
             }}
             lineNumberStyle={{
-              color: '#545454',
+              color: '#999',
             }}
           >
             {block.code.rich_text.map((t) => t.plain_text).join('')}

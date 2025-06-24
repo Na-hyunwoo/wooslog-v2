@@ -10,7 +10,7 @@ export const Blockquote = ({
   id?: string;
 }) => {
   return (
-    <blockquote id={id} className={twMerge('mb-6 rounded-2xl bg-[#f2f4f6] p-4', className)}>
+    <blockquote id={id} className={twMerge('mb-6 rounded-2xl bg-slate-700/50 p-4', className)}>
       {children}
     </blockquote>
   );
