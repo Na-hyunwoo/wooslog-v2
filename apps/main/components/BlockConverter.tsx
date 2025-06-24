@@ -25,7 +25,7 @@ export const BlockConverter = (block: ConvertedBlockInterface) => {
       return <H3 id={block.id}>{block.heading_3.rich_text.map((t) => t.plain_text).join('')}</H3>;
     case 'bulleted_list_item_group':
       return (
-        <ul className="ml-6 list-disc">
+        <ul className="ml-6 mb-3 list-disc flex flex-col gap-1.5">
           {block.bulleted_list_item_group.map((t) => (
             <Li id={t.id} key={t.id}>
               {t.bulleted_list_item.rich_text.map((t) => (
@@ -37,7 +37,7 @@ export const BlockConverter = (block: ConvertedBlockInterface) => {
       );
     case 'numbered_list_item_group':
       return (
-        <ol className="ml-6 list-decimal">
+        <ol className="ml-6 mb-3 list-decimal flex flex-col gap-1.5">
           {block.numbered_list_item_group.map((t) => (
             <Li id={t.id} key={t.id}>
               {t.numbered_list_item.rich_text.map((t) => (
@@ -133,7 +133,7 @@ export const H3 = ({
   id?: string;
 }) => {
   return (
-    <h3 id={id} className={twMerge('mb-6 text-2xl font-bold', className)}>
+    <h3 id={id} className={twMerge('my-6 text-2xl font-bold', className)}>
       {children}
     </h3>
   );
@@ -149,7 +149,7 @@ export const P = ({
   id?: string;
 }) => {
   return (
-    <p id={id} className={twMerge('mb-3', className)}>
+    <p id={id} className={twMerge('mb-3 break-keep', className)}>
       {children}
     </p>
   );
@@ -165,7 +165,7 @@ export const Li = ({
   id?: string;
 }) => {
   return (
-    <li id={id} className={twMerge('mb-3', className)}>
+    <li id={id} className={twMerge(className)}>
       {children}
     </li>
   );
