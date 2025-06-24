@@ -5,23 +5,9 @@ import { Card, HomePageSchema } from './components';
 
 import { getDatabasesResult } from '@/apis';
 import { PageViewTracker } from '@/components';
-import { BASE_URL, ON_THE_FIRST_SCREEN } from '@/const';
+import { METADATA, ON_THE_FIRST_SCREEN } from '@/const';
 
-export const metadata = {
-  description:
-    '호기심이 이끄는 대로 기술을 탐험하고, 생각의 깊이를 더해가는 공간. 실무에서 놓친 고민들을 되살려 더 나은 개발자로 성장하는 기록.',
-  openGraph: {
-    description:
-      '호기심이 이끄는 대로 기술을 탐험하고, 생각의 깊이를 더해가는 공간. 실무에서 놓친 고민들을 되살려 더 나은 개발자로 성장하는 기록.',
-    images: [`${BASE_URL}/avatar.png`],
-    title: '나현우 블로그',
-    type: 'website',
-  },
-  title: '홈',
-  alternates: {
-    canonical: `${BASE_URL}/`,
-  },
-};
+export const metadata = METADATA.HOME;
 
 export default async function Home() {
   const results = await getDatabasesResult();

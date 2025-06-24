@@ -1,4 +1,3 @@
-import type { Metadata } from 'next';
 import { Fragment } from 'react';
 
 import {
@@ -10,74 +9,24 @@ import {
   PostNavigation,
   TableOfContents,
 } from './components';
+import { generatePostMetadata } from './lib/metadata';
+import { generatePostStaticParams } from './lib/static-params';
 
 import {
   addExternalUrlToAllImageBlocks,
   addExternalUrlToAllPageProperties,
   getAllBlocks,
-  getDatabasesResult,
   getPage,
 } from '@/apis';
 import { PageViewTracker } from '@/components';
 import { BASE_URL } from '@/const';
 import { formatPostDate, makeBlocksGroup } from '@/utils';
 
-export const generateMetadata = async ({
-  params,
-}: {
-  params: Promise<{ id: string }>;
-}): Promise<Metadata> => {
-  const { id: pageId } = await params;
-
-  try {
-    const pageData = await getPage(pageId);
-    const title = pageData.properties.title.title[0].plain_text;
-    const imageUrl = pageData.properties.thumbnail.files[0]?.external?.url;
-    const description = pageData.properties.description.rich_text[0].plain_text;
-
-    return {
-      description,
-      openGraph: {
-        description,
-        images: imageUrl ? [imageUrl] : [],
-        title,
-        type: 'article',
-        authors: ['나현우'],
-      },
-      title,
-      twitter: {
-        card: 'summary_large_image',
-        description,
-        images: imageUrl ? [imageUrl] : [],
-        title,
-      },
-      alternates: {
-        canonical: `${BASE_URL}/post/${pageId}/`,
-      },
-    };
-  } catch (error) {
-    console.error('Failed to generate metadata:', error);
-    return {
-      description: '포스트를 불러오는 중에 오류가 발생했습니다.',
-      title: '포스트',
-    };
-  }
-};
+export const generateMetadata = generatePostMetadata;
 
 export const dynamicParams = true;
 
-export const generateStaticParams = async () => {
-  try {
-    const results = await getDatabasesResult();
-
-    return results.map((result) => ({
-      id: result.id,
-    }));
-  } catch (error) {
-    console.error('Failed to generate static params:', error);
-    return [];
-  }
-};
+export const generateStaticParams = generatePostStaticParams;
 
 export default async function Detail({ params }: { params: Promise<{ id: string }> }) {
   const { id: pageId } = await params;

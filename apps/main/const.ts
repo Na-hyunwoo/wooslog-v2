@@ -30,3 +30,36 @@ export const DEPLOYMENT_STATUS = {
   SUCCESS: 'SUCCESS',
   FAILED: 'FAILED',
 } as const;
+
+export const METADATA = {
+  HOME: {
+    description:
+      '호기심이 이끄는 대로 기술을 탐험하고, 생각의 깊이를 더해가는 공간. 실무에서 놓친 고민들을 되살려 더 나은 개발자로 성장하는 기록.',
+    openGraph: {
+      description:
+        '호기심이 이끄는 대로 기술을 탐험하고, 생각의 깊이를 더해가는 공간. 실무에서 놓친 고민들을 되살려 더 나은 개발자로 성장하는 기록.',
+      images: [`${BASE_URL}/avatar.png`],
+      title: '나현우 블로그',
+      type: 'website',
+    },
+    title: '홈',
+    alternates: {
+      canonical: `${BASE_URL}/`,
+    },
+  },
+  ABOUT: {
+    description:
+      '프론트엔드 개발자 나현우입니다. 확장성을 고려한 코드 작성을 중요하게 생각하며, 지속 가능한 방식으로 성장하는 방법에 대해 고민합니다.',
+    openGraph: {
+      description:
+        '프론트엔드 개발자 나현우입니다. 확장성을 고려한 코드 작성을 중요하게 생각하며, 지속 가능한 방식으로 성장하는 방법에 대해 고민합니다.',
+      images: [`${BASE_URL}/avatar.png`],
+      title: '나현우 소개',
+      type: 'profile',
+    },
+    title: '소개',
+    alternates: {
+      canonical: `${BASE_URL}/about/`,
+    },
+  },
+};
