@@ -16,7 +16,7 @@ export const Card = ({ title, desc, alt, src, createdTime, ...props }: CardProps
   const renderDate = formatPostDate(createdTime);
 
   return (
-    <div className="block transform transition-transform duration-300 lg:hover:-translate-y-2 shadow-[0_15px_30px_0_rgba(0,0,0,0.05)] overflow-hidden rounded-2xl w-[360px] md:w-[480px]">
+    <div className="block transform bg-slate-800/50 transition-transform duration-300 lg:hover:-translate-y-2 overflow-hidden rounded-2xl w-[360px] md:w-[480px]">
       <div className="relative w-full aspect-[360/202] md:aspect-[480/269]">
         <Image
           fill
