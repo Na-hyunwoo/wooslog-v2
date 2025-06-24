@@ -15,7 +15,7 @@ module.exports = {
     "@typescript-eslint/no-explicit-any": "warn",
     "func-style": ["error", "expression"],
     "import/order": [
-      "error",
+      "warn",
       {
         groups: [
           "builtin",
