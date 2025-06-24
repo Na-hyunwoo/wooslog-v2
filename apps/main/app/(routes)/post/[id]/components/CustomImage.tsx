@@ -25,7 +25,7 @@ export const CustomImage = ({
           sizes="672px"
         />
       </div>
-      {caption && <p className="text-center text-sm text-gray-500">{caption}</p>}
+      {caption && <p className="text-center text-sm text-gray-300">{caption}</p>}
     </div>
   );
 };

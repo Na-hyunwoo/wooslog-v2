@@ -1,6 +1,6 @@
 import { Fragment } from 'react';
 import SyntaxHighlighter from 'react-syntax-highlighter';
-import { anOldHope } from 'react-syntax-highlighter/dist/esm/styles/hljs';
+import { anOldHope } from 'react-syntax-highlighter/dist/cjs/styles/hljs';
 
 import { Blockquote } from './BlockQuote';
 import { CustomImage } from './CustomImage';
@@ -70,7 +70,6 @@ export const BlockConverter = (block: ConvertedBlockInterface) => {
             showLineNumbers
             style={anOldHope}
             customStyle={{
-              backgroundColor: 'white',
               border: '1px solid #545454',
               borderRadius: '8px',
               fontSize: '13px',
