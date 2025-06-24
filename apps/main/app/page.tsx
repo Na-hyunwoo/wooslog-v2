@@ -1,8 +1,10 @@
 import Image from 'next/image';
 import Link from 'next/link';
 
+import { Card, HomePageSchema } from './components';
+
 import { getDatabasesResult } from '@/apis';
-import { Card, HomePageSchema, PageViewTracker } from '@/components';
+import { PageViewTracker } from '@/components';
 import { BASE_URL, ON_THE_FIRST_SCREEN } from '@/const';
 
 export const metadata = {

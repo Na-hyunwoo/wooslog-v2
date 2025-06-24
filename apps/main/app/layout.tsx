@@ -2,7 +2,8 @@ import { Footer } from '@wooslog/ui';
 import type { Metadata } from 'next';
 import { ReactNode } from 'react';
 
-import { Header } from '@/components';
+import { Header } from './components';
+
 import { BASE_URL } from '@/const';
 
 import '@wooslog/ui/styles.css';

@@ -2,22 +2,23 @@ import type { Metadata } from 'next';
 import { Fragment } from 'react';
 
 import {
+  BlockConverter,
+  BlogPostingSchema,
+  CustomImage,
+  H1,
+  P,
+  PostNavigation,
+  TableOfContents,
+} from './components';
+
+import {
   addExternalUrlToAllImageBlocks,
   addExternalUrlToAllPageProperties,
   getAllBlocks,
   getDatabasesResult,
   getPage,
 } from '@/apis';
-import {
-  BlockConverter,
-  CustomImage,
-  H1,
-  P,
-  BlogPostingSchema,
-  PageViewTracker,
-  PostNavigation,
-  TableOfContents,
-} from '@/components';
+import { PageViewTracker } from '@/components';
 import { BASE_URL } from '@/const';
 import { formatPostDate, makeBlocksGroup } from '@/utils';
 
