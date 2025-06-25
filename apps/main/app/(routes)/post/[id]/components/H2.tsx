@@ -10,7 +10,7 @@ export const H2 = ({
   id?: string;
 }) => {
   return (
-    <h2 id={id} className={twMerge('my-6 text-3xl font-bold scroll-mt-20', className)}>
+    <h2 id={id} className={twMerge('my-6 text-2xl md:text-3xl font-bold scroll-mt-20', className)}>
       {children}
     </h2>
   );
