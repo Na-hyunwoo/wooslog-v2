@@ -6,7 +6,7 @@ import { Header } from './components';
 import { BASE_URL, METADATA } from '@/const';
 
 import '@wooslog/ui/styles.css';
-import './globals.css';
+import '@/app/globals.css';
 
 export const metadata = METADATA.BASE;
 
