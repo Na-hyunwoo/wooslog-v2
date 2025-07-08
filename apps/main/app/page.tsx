@@ -1,17 +1,16 @@
 import Link from 'next/link';
 
 import { Card, HomePageSchema, SelfIntroduction } from './components';
-import { transformPostsData } from './utils';
 
-import { getDatabasesResult } from '@/apis';
 import { PageViewTracker } from '@/components';
 import { METADATA, ON_THE_FIRST_SCREEN } from '@/const';
+import { getDatabasesResult, transformPagesToPostsData } from '@/services';
 
 export const metadata = METADATA.HOME;
 
 export default async function Home() {
   const results = await getDatabasesResult();
-  const posts = transformPostsData(results);
+  const posts = transformPagesToPostsData(results);
 
   return (
     <main className="mx-auto max-w-screen-lg flex flex-col items-center">

@@ -1,7 +1,7 @@
 import { Metadata } from 'next';
 
-import { getPage } from '@/apis';
 import { BASE_URL } from '@/const';
+import { getPage } from '@/services';
 
 export const generatePostMetadata = async ({
   params,

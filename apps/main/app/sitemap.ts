@@ -1,7 +1,7 @@
 import { MetadataRoute } from 'next';
 
-import { getDatabasesResult } from '@/apis';
 import { BASE_URL } from '@/const';
+import { getDatabasesResult } from '@/services';
 
 // 기본 라우트(홈, About 페이지)를 반환하는 함수
 const getBasicRoutes = (currentDate: string): MetadataRoute.Sitemap => {

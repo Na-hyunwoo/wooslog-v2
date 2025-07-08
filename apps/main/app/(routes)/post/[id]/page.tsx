@@ -9,12 +9,12 @@ import {
   PostNavigation,
   TableOfContents,
 } from './components';
-import { getPostDetailData } from './lib/getPostDetailData';
 import { generatePostMetadata } from './lib/metadata';
 import { generatePostStaticParams } from './lib/static-params';
 
 import { PageViewTracker } from '@/components';
 import { BASE_URL } from '@/const';
+import { getPostDetail } from '@/services';
 
 export const generateMetadata = generatePostMetadata;
 
@@ -34,7 +34,7 @@ export default async function Detail({ params }: { params: Promise<{ id: string 
     created_time,
     imageUrl,
     title,
-  } = await getPostDetailData(pageId);
+  } = await getPostDetail(pageId);
 
   return (
     <main className="mx-auto max-w-2xl py-16 px-4 break-all">

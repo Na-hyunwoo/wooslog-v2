@@ -2,9 +2,14 @@ import { GetBlockResponse, ListBlockChildrenResponse } from '@notionhq/client';
 import { unstable_cache } from 'next/cache';
 
 import { DATABASE_ID } from '@/const';
-import { cloudinaryApi } from '@/lib/cloudinary';
 import { notion } from '@/lib/notion';
-import type { CustomPageObjectResponse, UpdateBlockParams, UpdatePageParams } from '@/types/notion';
+import { CustomPageObjectResponse, UpdateBlockParams, UpdatePageParams } from '@/types/notion';
+
+/**
+ * Notion API 서비스
+ *
+ * Notion API와의 직접적인 통신을 담당하는 함수들
+ */
 
 /**
  * 특정 블록의 하위 블록을 가져오는 함수
@@ -13,7 +18,10 @@ import type { CustomPageObjectResponse, UpdateBlockParams, UpdatePageParams } fr
  * @param nextCursor 다음 페이지 커서
  * @returns 블록 목록 응답
  */
-const getBlocks = async (id: string, nextCursor: string | null = null) => {
+export const getBlocks = async (
+  id: string,
+  nextCursor: string | null = null
+): Promise<ListBlockChildrenResponse> => {
   return unstable_cache(
     async () => {
       try {
@@ -24,12 +32,14 @@ const getBlocks = async (id: string, nextCursor: string | null = null) => {
 
         return res;
       } catch (error) {
-        console.error(error);
+        console.error(`블록 ${id} 조회 실패:`, error);
+        // 에러 발생 시 빈 결과 반환
         return {
           has_more: false,
-          next_cursor: '',
+          next_cursor: null,
           results: [],
-        };
+          object: 'list',
+        } as unknown as ListBlockChildrenResponse;
       }
     },
     ['blocks', id, nextCursor ?? ''],
@@ -43,7 +53,7 @@ const getBlocks = async (id: string, nextCursor: string | null = null) => {
  * @param id 블록 ID
  * @returns 모든 하위 블록 배열
  */
-export const getAllBlocks = async (id: string) => {
+export const getAllBlocks = async (id: string): Promise<GetBlockResponse[]> => {
   const blocks: GetBlockResponse[] = [];
   let hasMore = true;
   let nextCursor: string | null = null;
@@ -52,7 +62,7 @@ export const getAllBlocks = async (id: string) => {
     const { results, next_cursor, has_more } = await getBlocks(id, nextCursor);
 
     blocks.push(...results);
-    nextCursor = next_cursor ?? '';
+    nextCursor = next_cursor;
     hasMore = has_more;
   }
 
@@ -65,62 +75,15 @@ export const getAllBlocks = async (id: string) => {
  * @param params 업데이트 파라미터
  * @returns 업데이트된 블록
  */
-const updateBlock = async ({ id, body }: UpdateBlockParams) => {
+export const updateBlock = async ({ id, body }: UpdateBlockParams) => {
   try {
     const res = await notion.blocks.update({ block_id: id, ...body });
 
     return res;
   } catch (error) {
-    console.error(error);
+    console.error(`블록 ${id} 업데이트 실패:`, error);
+    return null;
   }
-};
-
-/**
- * 모든 이미지 블록의 URL을 Cloudinary URL로 변환하는 함수
- *
- * @param id 블록 ID
- */
-export const addExternalUrlToAllImageBlocks = async (id: string) => {
-  const blocks = await getAllBlocks(id);
-  const imgBlocks = blocks.filter((block) => 'type' in block && block.type === 'image');
-
-  if (imgBlocks.length === 0) {
-    return;
-  }
-
-  const updatePromises = imgBlocks.map(async (block, index) => {
-    const url = 'file' in block.image && block.image.file?.url;
-    if (!url) {
-      return null;
-    }
-
-    try {
-      const convertedUrl = await cloudinaryApi.convertToCloudinaryImg({
-        imgUrl: url,
-        title: `post_${id}_${index}`,
-      });
-
-      if (!convertedUrl) {
-        return null;
-      }
-
-      return updateBlock({
-        body: {
-          image: {
-            external: {
-              url: convertedUrl,
-            },
-          },
-        },
-        id: block.id,
-      });
-    } catch (error) {
-      console.error(`블록 ${block.id} 처리 실패:`, error);
-      return null;
-    }
-  });
-
-  await Promise.all(updatePromises);
 };
 
 /**
@@ -148,44 +111,7 @@ export const updatePage = async ({ id, body }: UpdatePageParams) => {
     });
     return res;
   } catch (error) {
-    console.error(error);
-  }
-};
-
-/**
- * 페이지 속성의 모든 이미지 URL을 Cloudinary URL로 변환하는 함수
- *
- * @param id 페이지 ID
- * @returns 업데이트된 페이지
- */
-export const addExternalUrlToAllPageProperties = async (id: string) => {
-  const page = await getPage(id);
-  const thumbnail = page.properties.thumbnail.files;
-
-  if (thumbnail[0].type !== 'file' || !thumbnail[0].file?.url) {
-    return;
-  }
-
-  try {
-    const convertedUrl = await cloudinaryApi.convertToCloudinaryImg({
-      imgUrl: thumbnail[0].file.url,
-      title: `thumbnail_${id}`,
-    });
-
-    if (!convertedUrl) {
-      return null;
-    }
-
-    return updatePage({
-      body: {
-        thumbnail: {
-          files: [{ type: 'external', external: { url: convertedUrl } }],
-        },
-      },
-      id,
-    });
-  } catch (error) {
-    console.error(`블록 ${id} 처리 실패:`, error);
+    console.error(`페이지 ${id} 업데이트 실패:`, error);
     return null;
   }
 };
@@ -196,25 +122,37 @@ export const addExternalUrlToAllPageProperties = async (id: string) => {
  * @param id 페이지 ID
  * @returns 페이지 객체
  */
-export const getPage = async (id: string) => {
+export const getPage = async (id: string): Promise<CustomPageObjectResponse> => {
   return unstable_cache(
     async () => {
       try {
         const res = await notion.pages.retrieve({ page_id: id });
         return res as CustomPageObjectResponse;
       } catch (error) {
-        console.error(error);
-        return {
+        console.error(`페이지 ${id} 조회 실패:`, error);
+        // 에러 발생 시 기본 페이지 객체 반환
+        const emptyPage = {
+          id: '',
           created_time: '',
           last_edited_time: '',
+          url: '',
+          parent: { type: 'database_id', database_id: '' },
+          archived: false,
           properties: {
             description: { rich_text: [] },
             title: { title: [] },
             thumbnail: { files: [] },
             prevPostId: { rich_text: [] },
             nextPostId: { rich_text: [] },
+            distributable: { checkbox: false },
+            deployment_status: { rich_text: [] },
+            created_time: { created_time: '' },
+            last_edited_time: { last_edited_time: '' },
           },
-        };
+          object: 'page',
+        } as unknown as CustomPageObjectResponse;
+
+        return emptyPage;
       }
     },
     ['page', id],
@@ -227,7 +165,7 @@ export const getPage = async (id: string) => {
  *
  * @returns 데이터베이스 결과 (페이지 객체 배열)
  */
-export const getDatabasesResult = async () => {
+export const getDatabasesResult = async (): Promise<CustomPageObjectResponse[]> => {
   return unstable_cache(
     async () => {
       try {
@@ -252,7 +190,7 @@ export const getDatabasesResult = async () => {
         });
         return (res.results ?? []) as CustomPageObjectResponse[];
       } catch (error) {
-        console.error('Failed to fetch database results:', error);
+        console.error('데이터베이스 결과 조회 실패:', error);
         return [] as CustomPageObjectResponse[];
       }
     },

@@ -1,4 +1,4 @@
-import { getDatabasesResult } from '@/apis';
+import { getDatabasesResult } from '@/services';
 
 export const generatePostStaticParams = async () => {
   try {
