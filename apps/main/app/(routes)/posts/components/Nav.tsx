@@ -24,7 +24,7 @@ export const Nav = () => {
     <nav aria-label="header navigation">
       <Tab>
         {Object.entries(ROUTES).map(([key, route]) => {
-          const isActive = activeRoute === route;
+          const isActive = activeRoute.startsWith(route);
 
           return (
             <Tab.Item
