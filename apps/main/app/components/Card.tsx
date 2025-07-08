@@ -3,7 +3,7 @@
 import Image, { ImageProps } from 'next/image';
 import { useState } from 'react';
 
-import { formatPostDate } from '@/utils';
+import { formatPostDate } from '@/lib/utils';
 
 type CardProps = {
   title: string;

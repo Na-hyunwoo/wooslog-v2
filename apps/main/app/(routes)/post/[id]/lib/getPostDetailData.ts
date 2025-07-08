@@ -4,7 +4,7 @@ import {
   getAllBlocks,
   getPage,
 } from '@/apis';
-import { formatPostDate, makeBlocksGroup } from '@/utils';
+import { formatPostDate, makeBlocksGroup } from '@/lib/utils';
 
 export const getPostDetailData = async (pageId: string) => {
   await addExternalUrlToAllPageProperties(pageId);
