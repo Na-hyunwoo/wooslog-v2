@@ -1,6 +1,6 @@
-import { PostNavigationProps } from '../types';
-
 import { NavigationButton } from './NavigationButton';
+
+import { PostNavigationProps } from '@/types/post';
 
 export const PostNavigation = ({ prevPost, nextPost }: PostNavigationProps) => {
   if (!prevPost && !nextPost) {

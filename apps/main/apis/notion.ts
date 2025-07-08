@@ -4,8 +4,15 @@ import { unstable_cache } from 'next/cache';
 import { DATABASE_ID } from '@/const';
 import { cloudinaryApi } from '@/lib/cloudinary';
 import { notion } from '@/lib/notion';
-import type { CustomPageObjectResponse, UpdateBlockParams, UpdatePageParams } from '@/types/blocks';
+import type { CustomPageObjectResponse, UpdateBlockParams, UpdatePageParams } from '@/types/notion';
 
+/**
+ * 특정 블록의 하위 블록을 가져오는 함수
+ *
+ * @param id 블록 ID
+ * @param nextCursor 다음 페이지 커서
+ * @returns 블록 목록 응답
+ */
 const getBlocks = async (id: string, nextCursor: string | null = null) => {
   return unstable_cache(
     async () => {
@@ -30,6 +37,12 @@ const getBlocks = async (id: string, nextCursor: string | null = null) => {
   )();
 };
 
+/**
+ * 특정 블록의 모든 하위 블록을 가져오는 함수 (페이지네이션 처리)
+ *
+ * @param id 블록 ID
+ * @returns 모든 하위 블록 배열
+ */
 export const getAllBlocks = async (id: string) => {
   const blocks: GetBlockResponse[] = [];
   let hasMore = true;
@@ -46,6 +59,12 @@ export const getAllBlocks = async (id: string) => {
   return blocks;
 };
 
+/**
+ * 블록을 업데이트하는 함수
+ *
+ * @param params 업데이트 파라미터
+ * @returns 업데이트된 블록
+ */
 const updateBlock = async ({ id, body }: UpdateBlockParams) => {
   try {
     const res = await notion.blocks.update({ block_id: id, ...body });
@@ -56,6 +75,11 @@ const updateBlock = async ({ id, body }: UpdateBlockParams) => {
   }
 };
 
+/**
+ * 모든 이미지 블록의 URL을 Cloudinary URL로 변환하는 함수
+ *
+ * @param id 블록 ID
+ */
 export const addExternalUrlToAllImageBlocks = async (id: string) => {
   const blocks = await getAllBlocks(id);
   const imgBlocks = blocks.filter((block) => 'type' in block && block.type === 'image');
@@ -99,6 +123,12 @@ export const addExternalUrlToAllImageBlocks = async (id: string) => {
   await Promise.all(updatePromises);
 };
 
+/**
+ * 페이지를 업데이트하는 함수
+ *
+ * @param params 업데이트 파라미터
+ * @returns 업데이트된 페이지
+ */
 export const updatePage = async ({ id, body }: UpdatePageParams) => {
   try {
     const res = await notion.pages.update({
@@ -122,6 +152,12 @@ export const updatePage = async ({ id, body }: UpdatePageParams) => {
   }
 };
 
+/**
+ * 페이지 속성의 모든 이미지 URL을 Cloudinary URL로 변환하는 함수
+ *
+ * @param id 페이지 ID
+ * @returns 업데이트된 페이지
+ */
 export const addExternalUrlToAllPageProperties = async (id: string) => {
   const page = await getPage(id);
   const thumbnail = page.properties.thumbnail.files;
@@ -154,6 +190,12 @@ export const addExternalUrlToAllPageProperties = async (id: string) => {
   }
 };
 
+/**
+ * 특정 페이지를 가져오는 함수
+ *
+ * @param id 페이지 ID
+ * @returns 페이지 객체
+ */
 export const getPage = async (id: string) => {
   return unstable_cache(
     async () => {
@@ -180,6 +222,11 @@ export const getPage = async (id: string) => {
   )();
 };
 
+/**
+ * 데이터베이스 결과를 가져오는 함수
+ *
+ * @returns 데이터베이스 결과 (페이지 객체 배열)
+ */
 export const getDatabasesResult = async () => {
   return unstable_cache(
     async () => {

@@ -12,9 +12,15 @@ import { P } from './P';
 import { Pre } from './Pre';
 import { RichTextConverter } from './RichTextConverter';
 
-import type { ConvertedBlockInterface } from '@/types';
+import type { ConvertedBlock } from '@/types/notion';
 
-export const BlockConverter = (block: ConvertedBlockInterface) => {
+/**
+ * Notion 블록을 React 컴포넌트로 변환하는 함수
+ *
+ * @param block 변환할 블록
+ * @returns React 컴포넌트
+ */
+export const BlockConverter = (block: ConvertedBlock) => {
   switch (block.type) {
     case 'paragraph':
       return (

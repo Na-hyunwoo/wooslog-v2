@@ -1,7 +1,7 @@
 import { Button, ChevronLeftIcon, ChevronRightIcon } from '@wooslog/ui';
 import Link from 'next/link';
 
-import { NavigationButtonProps } from '../types';
+import { NavigationButtonProps } from '@/types/notion';
 
 export const NavigationButton = ({ post, direction }: NavigationButtonProps) => {
   const isPrev = direction === 'prev';

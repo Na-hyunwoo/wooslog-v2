@@ -1,12 +1,11 @@
-import { CustomPageObjectResponse } from '@/types';
+import { CustomPageObjectResponse, PostData } from '@/types/notion';
 
-export interface PostData {
-  id: string;
-  title: string;
-  description: string;
-  imageUrl: string;
-  createdTime: string;
-}
+/**
+ * Notion 페이지 객체를 PostData 타입으로 변환하는 함수
+ *
+ * @param result Notion 페이지 객체
+ * @returns PostData 타입의 객체
+ */
 export const transformPostData = (result: CustomPageObjectResponse): PostData => {
   return {
     id: result.id,
@@ -17,6 +16,12 @@ export const transformPostData = (result: CustomPageObjectResponse): PostData =>
   };
 };
 
+/**
+ * 여러 Notion 페이지 객체를 PostData 타입 배열로 변환하는 함수
+ *
+ * @param results Notion 페이지 객체 배열
+ * @returns PostData 타입의 객체 배열
+ */
 export const transformPostsData = (results: CustomPageObjectResponse[]): PostData[] => {
   return results.map(transformPostData);
 };

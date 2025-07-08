@@ -1,6 +1,12 @@
-import { ConvertedBlockInterface } from '@/types';
+import { ConvertedBlock } from '@/types/notion';
 
-export const TableOfContents = ({ blocks }: { blocks: ConvertedBlockInterface[] }) => {
+/**
+ * 목차 컴포넌트
+ *
+ * @param blocks 변환된 블록 배열
+ * @returns 목차 컴포넌트
+ */
+export const TableOfContents = ({ blocks }: { blocks: ConvertedBlock[] }) => {
   const h2Blocks = blocks.filter((block) => block.type === 'heading_2');
 
   return (
