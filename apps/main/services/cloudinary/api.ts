@@ -10,12 +10,8 @@ import { v2 as cloudinary, UploadApiOptions } from 'cloudinary';
 // Cloudinary 초기화
 const initializeCloudinary = (): void => {
   const cloudinaryUrl = process.env.CLOUDINARY_URL ?? '';
-  const urlRegx = /^cloudinary:\/\/([a-z0-9-_]+):([a-z0-9-_]+)@([a-z0-9-_]+)$/i;
-  if (!urlRegx.test(cloudinaryUrl)) {
-    throw new Error('유효하지 않은 Cloudinary URL입니다');
-  }
-
-  const [, apiKey, apiSecret, cloudName] = urlRegx.exec(cloudinaryUrl) ?? [];
+  const [, apiKey, apiSecret, cloudName] =
+    cloudinaryUrl.match(/^cloudinary:\/\/([a-z0-9-_]+):([a-z0-9-_]+)@([a-z0-9-_]+)$/i) ?? [];
 
   cloudinary.config({
     api_key: apiKey,
@@ -92,10 +88,6 @@ export const convertToCloudinaryImg = async ({
 }): Promise<string | null> => {
   try {
     const folder = process.env.NEXT_PUBLIC_CLOUDINARY_FOLDER;
-
-    if (!folder) {
-      throw new Error('Cloudinary 폴더 이름이 설정되지 않았습니다');
-    }
 
     const imgBase64 = await downloadImgToBase64(imgUrl);
     const url = await uploadImgToCloudinary({

@@ -4,9 +4,13 @@ import { ReactNode } from 'react';
 import { Header } from './posts/components';
 
 import { BASE_URL, METADATA } from '@/const';
+import { validateEnv } from '@/lib/utils';
 
 import '@wooslog/ui/styles.css';
 import '@/app/globals.css';
+
+// 서버 시작 시 환경 변수 검증
+validateEnv();
 
 export const metadata = METADATA.BASE;
 
