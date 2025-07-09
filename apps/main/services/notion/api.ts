@@ -1,8 +1,9 @@
 import { GetBlockResponse, ListBlockChildrenResponse } from '@notionhq/client';
 import { unstable_cache } from 'next/cache';
 
+import { notion } from './client';
+
 import { DATABASE_ID } from '@/const';
-import { notion } from '@/lib/notion';
 import { CustomPageObjectResponse, UpdateBlockParams, UpdatePageParams } from '@/types/notion';
 
 /**
