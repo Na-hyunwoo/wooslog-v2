@@ -33,7 +33,7 @@ export const generatePostMetadata = async ({
         title,
       },
       alternates: {
-        canonical: `${BASE_URL}/post/${pageId}/`,
+        canonical: `${BASE_URL}/posts/${pageId}/`,
       },
     };
   } catch (error) {

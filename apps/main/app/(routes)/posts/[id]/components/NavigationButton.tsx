@@ -10,7 +10,7 @@ export const NavigationButton = ({ post, direction }: NavigationButtonProps) => 
 
   return (
     <Button asChild variant="secondary" className={`md:h-16 h-10 w-1/2 px-2 md:px-4 gap-0`}>
-      <Link href={`/post/${post.id}`} className="flex flex-col">
+      <Link href={`/posts/${post.id}`} className="flex flex-col">
         <p
           className={`flex items-center gap-1 text-xs md:pb-2 ${isPrev ? 'self-start' : 'self-end'}`}
         >

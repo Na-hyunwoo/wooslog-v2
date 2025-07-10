@@ -34,7 +34,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       changeFrequency: 'monthly' as const,
       lastModified: new Date(post.last_edited_time).toISOString(),
       priority: 0.7,
-      url: `${BASE_URL}/post/${post.id}/`,
+      url: `${BASE_URL}/posts/${post.id}/`,
     }));
     const recentPosts = posts.slice(0, 1);
 

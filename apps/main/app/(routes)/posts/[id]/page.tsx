@@ -44,7 +44,7 @@ export default async function Detail({ params }: { params: Promise<{ id: string 
         description={description}
         imageUrl={imageUrl}
         title={title}
-        url={`${BASE_URL}/post/${pageId}`}
+        url={`${BASE_URL}/posts/${pageId}`}
       />
       <PageViewTracker pageType="post" pageId={pageId} />
       <CustomImage src={imageUrl} alt={title} />
