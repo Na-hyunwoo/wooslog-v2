@@ -4,6 +4,7 @@ import { unstable_cache } from 'next/cache';
 import { notion } from './client';
 
 import { DATABASE_ID } from '@/const';
+import { handleNotionError } from '@/lib/errors';
 import { CustomPageObjectResponse, UpdateBlockParams, UpdatePageParams } from '@/types/notion';
 
 /**
@@ -33,14 +34,7 @@ export const getBlocks = async (
 
         return res;
       } catch (error) {
-        console.error(`블록 ${id} 조회 실패:`, error);
-        // 에러 발생 시 빈 결과 반환
-        return {
-          has_more: false,
-          next_cursor: null,
-          results: [],
-          object: 'list',
-        } as unknown as ListBlockChildrenResponse;
+        throw handleNotionError(error);
       }
     },
     ['blocks', id, nextCursor ?? ''],
@@ -79,11 +73,9 @@ export const getAllBlocks = async (id: string): Promise<GetBlockResponse[]> => {
 export const updateBlock = async ({ id, body }: UpdateBlockParams) => {
   try {
     const res = await notion.blocks.update({ block_id: id, ...body });
-
     return res;
   } catch (error) {
-    console.error(`블록 ${id} 업데이트 실패:`, error);
-    return null;
+    throw handleNotionError(error);
   }
 };
 
@@ -112,8 +104,7 @@ export const updatePage = async ({ id, body }: UpdatePageParams) => {
     });
     return res;
   } catch (error) {
-    console.error(`페이지 ${id} 업데이트 실패:`, error);
-    return null;
+    throw handleNotionError(error);
   }
 };
 
@@ -130,30 +121,7 @@ export const getPage = async (id: string): Promise<CustomPageObjectResponse> => 
         const res = await notion.pages.retrieve({ page_id: id });
         return res as CustomPageObjectResponse;
       } catch (error) {
-        console.error(`페이지 ${id} 조회 실패:`, error);
-        // 에러 발생 시 기본 페이지 객체 반환
-        const emptyPage = {
-          id: '',
-          created_time: '',
-          last_edited_time: '',
-          url: '',
-          parent: { type: 'database_id', database_id: '' },
-          archived: false,
-          properties: {
-            description: { rich_text: [] },
-            title: { title: [] },
-            thumbnail: { files: [] },
-            prevPostId: { rich_text: [] },
-            nextPostId: { rich_text: [] },
-            distributable: { checkbox: false },
-            deployment_status: { rich_text: [] },
-            created_time: { created_time: '' },
-            last_edited_time: { last_edited_time: '' },
-          },
-          object: 'page',
-        } as unknown as CustomPageObjectResponse;
-
-        return emptyPage;
+        throw handleNotionError(error);
       }
     },
     ['page', id],
@@ -191,8 +159,7 @@ export const getDatabasesResult = async (): Promise<CustomPageObjectResponse[]> 
         });
         return (res.results ?? []) as CustomPageObjectResponse[];
       } catch (error) {
-        console.error('데이터베이스 결과 조회 실패:', error);
-        return [] as CustomPageObjectResponse[];
+        throw handleNotionError(error);
       }
     },
     ['database', DATABASE_ID.POST],

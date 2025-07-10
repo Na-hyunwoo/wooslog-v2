@@ -1,3 +1,5 @@
+import { ConfigurationError } from '../errors/custom-errors';
+
 /**
  * 환경 변수 검증 유틸리티
  *
@@ -37,7 +39,7 @@ export const validateEnv = (): void => {
   });
 
   if (missingVars.length > 0) {
-    throw new Error(`필수 환경 변수가 누락되었습니다: ${missingVars.join(', ')}`);
+    throw new ConfigurationError(`필수 환경 변수가 누락되었습니다: ${missingVars.join(', ')}`);
   }
 
   // Cloudinary URL 형식 검증
@@ -45,7 +47,7 @@ export const validateEnv = (): void => {
   if (cloudinaryUrl) {
     const urlRegx = /^cloudinary:\/\/([a-z0-9-_]+):([a-z0-9-_]+)@([a-z0-9-_]+)$/i;
     if (!urlRegx.test(cloudinaryUrl)) {
-      throw new Error(
+      throw new ConfigurationError(
         'CLOUDINARY_URL 형식이 올바르지 않습니다. 예상 형식: cloudinary://{API_KEY}:{API_SECRET}@{CLOUD_NAME}'
       );
     }

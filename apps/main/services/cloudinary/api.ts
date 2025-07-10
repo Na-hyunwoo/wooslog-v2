@@ -1,6 +1,8 @@
 // eslint-disable-next-line import/named
 import { v2 as cloudinary, UploadApiOptions } from 'cloudinary';
 
+import { handleCloudinaryError } from '@/lib/errors';
+
 /**
  * Cloudinary API 서비스
  *
@@ -43,8 +45,7 @@ export const downloadImgToBase64 = async (imgUrl: string): Promise<string> => {
 
     return buffer.toString('base64');
   } catch (error) {
-    console.error('이미지 다운로드 실패:', error);
-    throw error;
+    throw handleCloudinaryError(error);
   }
 };
 
@@ -61,14 +62,12 @@ export const uploadImgToCloudinary = async ({
 }: {
   img: string;
   options: UploadApiOptions;
-}): Promise<string | null> => {
+}): Promise<string> => {
   try {
     const res = await cloudinary.uploader.upload(img, options);
-
     return res.secure_url;
   } catch (error) {
-    console.error('Cloudinary 업로드 실패:', error);
-    return null;
+    throw handleCloudinaryError(error);
   }
 };
 
@@ -85,7 +84,7 @@ export const convertToCloudinaryImg = async ({
 }: {
   imgUrl: string;
   title: string;
-}): Promise<string | null> => {
+}): Promise<string> => {
   try {
     const folder = process.env.NEXT_PUBLIC_CLOUDINARY_FOLDER;
 
@@ -101,7 +100,6 @@ export const convertToCloudinaryImg = async ({
 
     return url;
   } catch (error) {
-    console.error('이미지 변환 실패:', error);
-    return null;
+    throw handleCloudinaryError(error);
   }
 };

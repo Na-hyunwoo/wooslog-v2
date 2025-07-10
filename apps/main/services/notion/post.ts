@@ -1,6 +1,7 @@
 import * as notionApi from './api';
 import * as transformer from './transformer';
 
+import { handleServerError } from '@/lib/errors';
 import { convertToCloudinaryImg } from '@/services/cloudinary/api';
 import { PostData } from '@/types/notion';
 import { PostDetailData } from '@/types/post';
@@ -17,8 +18,12 @@ import { PostDetailData } from '@/types/post';
  * @returns 포스트 데이터 배열
  */
 export const getAllPosts = async (): Promise<PostData[]> => {
-  const pages = await notionApi.getDatabasesResult();
-  return transformer.transformPagesToPostsData(pages);
+  try {
+    const pages = await notionApi.getDatabasesResult();
+    return transformer.transformPagesToPostsData(pages);
+  } catch (error) {
+    return handleServerError(error, []) as PostData[];
+  }
 };
 
 /**
@@ -44,27 +49,19 @@ const convertPagePropertiesToCloudinary = async (postId: string): Promise<void> 
     return;
   }
 
-  try {
-    const convertedUrl = await convertToCloudinaryImg({
-      imgUrl: thumbnail[0].file.url,
-      title: `thumbnail_${postId}`,
-    });
+  const convertedUrl = await convertToCloudinaryImg({
+    imgUrl: thumbnail[0].file.url,
+    title: `thumbnail_${postId}`,
+  });
 
-    if (!convertedUrl) {
-      return;
-    }
-
-    await notionApi.updatePage({
-      body: {
-        thumbnail: {
-          files: [{ type: 'external', external: { url: convertedUrl } }],
-        },
+  await notionApi.updatePage({
+    body: {
+      thumbnail: {
+        files: [{ type: 'external', external: { url: convertedUrl } }],
       },
-      id: postId,
-    });
-  } catch (error) {
-    console.error(`페이지 ${postId} 썸네일 변환 실패:`, error);
-  }
+    },
+    id: postId,
+  });
 };
 
 /**
@@ -86,30 +83,23 @@ const convertImageBlocksToCloudinary = async (postId: string): Promise<void> => 
       return null;
     }
 
-    try {
-      const convertedUrl = await convertToCloudinaryImg({
-        imgUrl: url,
-        title: `post_${postId}_${index}`,
-      });
+    const convertedUrl = await convertToCloudinaryImg({
+      imgUrl: url,
+      title: `post_${postId}_${index}`,
+    });
 
-      if (!convertedUrl) {
-        return null;
-      }
-
-      return notionApi.updateBlock({
-        body: {
-          image: {
-            external: {
-              url: convertedUrl,
-            },
+    const result = await notionApi.updateBlock({
+      body: {
+        image: {
+          external: {
+            url: convertedUrl,
           },
         },
-        id: block.id,
-      });
-    } catch (error) {
-      console.error(`블록 ${block.id} 처리 실패:`, error);
-      return null;
-    }
+      },
+      id: block.id,
+    });
+
+    return result;
   });
 
   await Promise.all(updatePromises);
@@ -138,5 +128,7 @@ export const getPostDetail = async (postId: string): Promise<PostDetailData> => 
   const nextPage = nextPostId ? await notionApi.getPage(nextPostId) : null;
 
   // 포스트 상세 데이터 생성
-  return transformer.createPostDetailData(page, blocksGroup, prevPage, nextPage);
+  const result = transformer.createPostDetailData(page, blocksGroup, prevPage, nextPage);
+
+  return result;
 };

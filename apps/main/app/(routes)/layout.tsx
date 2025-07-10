@@ -19,26 +19,24 @@ export default function RootLayout({
 }: Readonly<{
   children: ReactNode;
 }>) {
-  {
-    return (
-      <html lang="ko" className="scroll-smooth">
-        <head>
-          <link rel="sitemap" type="application/xml" href={`${BASE_URL}/sitemap.xml`} />
-          <link rel="preconnect" href="https://cdn.jsdelivr.net" crossOrigin="anonymous" />
-          <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
-          <link
-            rel="stylesheet"
-            as="style"
-            crossOrigin="anonymous"
-            href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css"
-          />
-        </head>
-        <body>
-          <Header />
-          {children}
-          <Footer />
-        </body>
-      </html>
-    );
-  }
+  return (
+    <html lang="ko" className="scroll-smooth">
+      <head>
+        <link rel="sitemap" type="application/xml" href={`${BASE_URL}/sitemap.xml`} />
+        <link rel="preconnect" href="https://cdn.jsdelivr.net" crossOrigin="anonymous" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
+        <link
+          rel="stylesheet"
+          as="style"
+          crossOrigin="anonymous"
+          href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css"
+        />
+      </head>
+      <body>
+        <Header />
+        {children}
+        <Footer />
+      </body>
+    </html>
+  );
 }
